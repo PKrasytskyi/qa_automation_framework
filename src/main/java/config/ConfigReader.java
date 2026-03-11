@@ -1,25 +1,45 @@
 package config;
 
 import java.io.FileInputStream;
-import java.io.IOException;
 import java.util.Properties;
 
 public class ConfigReader {
-    Properties properties;
 
-    public ConfigReader() {
+    private static Properties properties;
+
+    static {
+
+        properties = new Properties();
+
         try {
-            FileInputStream fis = new FileInputStream("src/test/resources/config/config.properties");
-            properties = new Properties();
-            properties.load(fis);
+            FileInputStream fis = new FileInputStream("config/config.properties");
 
-        } catch (IOException e) {
-            throw new RuntimeException(e);
+            properties.load(fis);
+        }
+        catch (Exception e){
+
+            throw new RuntimeException("Failed to load config file");
         }
     }
 
-    public String getProperties(String key){
-        return properties.getProperty(key);
+    public static String getBrowser(){
+        return properties.getProperty("browser");
+    }
+
+    public static String getBaseUrl(){
+        return properties.getProperty("baseUrl");
+    }
+
+    public static String getTimeOut(){
+        return properties.getProperty("timeout");
+    }
+
+    public static String getScreenshotPath(){
+        return properties.getProperty("screenshotPath");
+    }
+
+    public static String getHeadless(){
+        return properties.getProperty("headless");
     }
 }
 

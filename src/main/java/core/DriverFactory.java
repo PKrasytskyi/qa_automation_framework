@@ -1,46 +1,30 @@
 package core;
 
+import config.ConfigReader;
+import driver.BrowserManager;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.firefox.FirefoxDriver;
-import org.openqa.selenium.edge.EdgeDriver;
 
-import java.time.Duration;
 
 public class DriverFactory {
 
     private static ThreadLocal<WebDriver> driver = new ThreadLocal<>();
 
-    public static void initDriver(String browser) {
+    public static void InitDriver(){
 
-        switch (browser.toLowerCase()) {
+        String browser = ConfigReader.getBrowser();
 
-            case "chrome":
-                driver.set(new ChromeDriver());
-                break;
+        WebDriver webDriver = BrowserManager.createDriver(browser);
 
-            case "firefox":
-                driver.set(new FirefoxDriver());
-                break;
-
-            case "edge":
-                driver.set(new EdgeDriver());
-                break;
-
-            default:
-                throw new IllegalArgumentException("Browser not supported: " + browser);
-        }
-
-        getDriver().manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
-        getDriver().manage().window().maximize();
+        driver.set(webDriver);
     }
 
-    public static WebDriver getDriver() {
+    public static WebDriver getDriver(){
         return driver.get();
     }
 
-    public static void quitDriver() {
-        if (driver.get() != null) {
+    public static void quitDriver(){
+
+        if (driver.get() != null){
             driver.get().quit();
             driver.remove();
         }
