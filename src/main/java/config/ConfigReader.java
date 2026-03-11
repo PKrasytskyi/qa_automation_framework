@@ -5,7 +5,7 @@ import java.util.Properties;
 
 public class ConfigReader {
 
-    private static Properties properties;
+    private static final Properties properties;
 
     static {
 
