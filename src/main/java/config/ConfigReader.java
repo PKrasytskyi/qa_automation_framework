@@ -1,45 +1,43 @@
 package config;
 
-import java.io.FileInputStream;
+import java.io.InputStream;
 import java.util.Properties;
 
 public class ConfigReader {
 
-    private static final Properties properties;
+    private static final Properties properties = new Properties();
 
     static {
-
-        properties = new Properties();
-
         try {
-            FileInputStream fis = new FileInputStream("config/config.properties");
+            InputStream is = ConfigReader.class
+                    .getClassLoader()
+                    .getResourceAsStream("config.properties");
 
-            properties.load(fis);
-        }
-        catch (Exception e){
+            properties.load(is);
 
-            throw new RuntimeException("Failed to load config file");
+        } catch (Exception e){
+            throw new RuntimeException("Failed to load config file", e);
         }
     }
 
     public static String getBrowser(){
-        return properties.getProperty("browser");
+        return properties.getProperty("browser", "chrome");
     }
 
     public static String getBaseUrl(){
         return properties.getProperty("baseUrl");
     }
 
-    public static String getTimeOut(){
-        return properties.getProperty("timeout");
+    public static int getTimeout(){
+        return Integer.parseInt(properties.getProperty("timeout", "10"));
+    }
+
+    public static boolean isHeadless(){
+        return Boolean.parseBoolean(properties.getProperty("headless", "false"));
     }
 
     public static String getScreenshotPath(){
-        return properties.getProperty("screenshotPath");
-    }
-
-    public static String getHeadless(){
-        return properties.getProperty("headless");
+        return properties.getProperty("screenshotPath", "screenshots/");
     }
 }
 

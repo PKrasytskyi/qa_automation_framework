@@ -7,14 +7,21 @@ public class UserLoginData {
     @DataProvider(name = "validUserData")
     public Object[][] validData(){
         return new Object[][]{
-                {"tomsmith", "SuperSecretPassword"}
+                {"tomsmith", "SuperSecretPassword!"}
         };
     }
 
     @DataProvider(name = "invalidUserData")
     public Object[][] invalidData(){
         return new Object[][]{
-                {"tomsmith", "wrongSuperSecretPassword"}
+                {"tomsmith", "wrongSuperSecretPassword!"}
+        };
+    }
+
+    @DataProvider(name = "emptyLoginPass")
+    public Object[][] emptyLoginPass(){
+        return new Object[][]{
+                    {"", ""}
         };
     }
 }
