@@ -16,8 +16,8 @@ public class UserLoginTest extends BaseTest {
     private static final String DIRECT_SECUREAREA_ERROR_MESSAGE = "You must login to view the secure area!";
 
     private void login(String name, String pass){
-        mainPage.clickFormAuthentication();
-        loginPage.login(name, pass);
+        getMainPage().clickFormAuthentication();
+        getLoginPage().login(name, pass);
     }
 
 
@@ -26,8 +26,8 @@ public class UserLoginTest extends BaseTest {
 
         login(name, pass);
 
-        String actualResult = secureAreaPage.getFlashText();
-        Assert.assertTrue(secureAreaPage.isPageOpened());
+        String actualResult = getSecureAreaPage().getFlashText();
+        Assert.assertTrue(getSecureAreaPage().isPageOpened());
         Assert.assertTrue(actualResult.contains(SUCCESS_LOGIN_MESSAGE), "Expected success message not found");
 
     }
@@ -37,7 +37,7 @@ public class UserLoginTest extends BaseTest {
 
         login(name, pass);
 
-        String actualResult = loginPage.getFlashText();
+        String actualResult = getLoginPage().getFlashText();
         Assert.assertTrue(actualResult.contains(ERROR_USERPASSWORD_MESSAGE), "Expected user password error message not found");
     }
 
@@ -45,9 +45,9 @@ public class UserLoginTest extends BaseTest {
     public void shouldLogoutSuccessfully(String name, String pass) {
 
         login(name, pass);
-        secureAreaPage.clickLogoutButton();
+        getSecureAreaPage().clickLogoutButton();
 
-        String actualResult = loginPage.getFlashText();
+        String actualResult = getLoginPage().getFlashText();
         Assert.assertTrue(actualResult.contains(SUCCESS_LOGOUT_MESSAGE), "Expected success logout message not found");
     }
 
@@ -55,7 +55,7 @@ public class UserLoginTest extends BaseTest {
     public void shouldShowErrorWithInvalidUserName(String name, String pass){
 
         login(name, pass);
-        String actualResult = loginPage.getFlashText();
+        String actualResult = getLoginPage().getFlashText();
         Assert.assertTrue(actualResult.contains(ERROR_USERNAME_MESSAGE), "Expected username error message not found");
     }
 
@@ -64,7 +64,7 @@ public class UserLoginTest extends BaseTest {
 
         login(name, pass);
         driver.navigate().refresh();
-        Assert.assertTrue(secureAreaPage.isLogoutButtonVisible(), "User is not logged");
+        Assert.assertTrue(getSecureAreaPage().isLogoutButtonVisible(), "User is not logged");
         Assert.assertTrue(secureAreaPage.isPageOpened(), "Secure page is not opened after refresh");
     }
 
@@ -73,9 +73,9 @@ public class UserLoginTest extends BaseTest {
 
         driver.get(DIRECT_SECUREAREA_LINK);
 
-        String actualResult = loginPage.getFlashText();
+        String actualResult = getLoginPage().getFlashText();
 
-        Assert.assertTrue(loginPage.isPageOpened(), "Login page not opened when accessing secure URL directly");
+        Assert.assertTrue(getLoginPage().isPageOpened(), "Login page not opened when accessing secure URL directly");
         Assert.assertTrue(actualResult.contains(DIRECT_SECUREAREA_ERROR_MESSAGE), "Expected secure area error message not found");
     }
 

@@ -26,7 +26,7 @@ src
      ├── java
      │   ├── data          # DataProviders and test data
      │   ├── pages         # Page Object classes (MainPage, LoginPage, SecurePage)
-     │   ├── setup         # BaseTest setup and driver management
+     │   ├── core          # BaseTest setup and driver management
      │   ├── tests         # Test classes (login, logout scenarios)
      │   └── utils         # Helper utilities and listeners
      └── resources

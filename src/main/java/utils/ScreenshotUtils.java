@@ -10,6 +10,7 @@ import java.io.File;
 
 public class ScreenshotUtils {
 
+
     public static String takeScreenshot(WebDriver driver, String testName){
 
         String path = ConfigReader.getScreenshotPath() + testName + "_" + System.currentTimeMillis() + ".png";
