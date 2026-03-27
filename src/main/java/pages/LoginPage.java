@@ -2,6 +2,7 @@ package pages;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import utils.WaitUtils;
 
 public class LoginPage {
 
@@ -18,26 +19,28 @@ public class LoginPage {
     By flashText = By.id("flash");
 
     public void setUserName(String name){
-       driver.findElement(userName).sendKeys(name);
+       WaitUtils.waitForVisible(driver, userName).sendKeys(name);
     }
 
     public void setUserPass(String pass){
-        driver.findElement(userPass).sendKeys(pass);
+        WaitUtils.waitForVisible(driver, userPass).sendKeys(pass);
     }
 
     public void login(String name, String pass){
-        driver.findElement(userName).sendKeys(name);
-        driver.findElement(userPass).sendKeys(pass);
-        driver.findElement(loginButton).click();
+        WaitUtils.waitForVisible(driver, userName).clear();
+        WaitUtils.waitForVisible(driver, userName).sendKeys(name);
+        WaitUtils.waitForVisible(driver, userPass).clear();
+        WaitUtils.waitForVisible(driver, userPass).sendKeys(pass);
+        WaitUtils.waitForClickable(driver, loginButton).click();
 
     }
 
     public void clickLoginButton(){
-        driver.findElement(loginButton).click();
+        WaitUtils.waitForClickable(driver, loginButton).click();
     }
 
     public String getFlashText(){
-        return driver.findElement(flashText).getText();
+        return WaitUtils.waitForVisible(driver, flashText).getText();
     }
 
     public boolean isPageOpened(){

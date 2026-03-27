@@ -2,6 +2,7 @@ package pages;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import utils.WaitUtils;
 
 public class MainPage {
 
@@ -11,13 +12,13 @@ public class MainPage {
         this.driver = driver;
     }
     //Locators
-    By formAuthentication = By.cssSelector("#content > ul > li:nth-child(21) > a");
-    By checkboxes = By.cssSelector("#content > ul > li:nth-child(6) > a");
-    By inputsPage = By.cssSelector("#content > ul > li:nth-child(27) > a");
-    By dropDownPage = By.cssSelector("#content > ul > li:nth-child(11) > a");
+    By formAuthentication = By.cssSelector("a[href='/login']");
+    By checkboxes = By.cssSelector("a[href='/checkboxes']");
+    By inputsPage = By.cssSelector("a[href='/inputs']");
+    By dropDownPage = By.cssSelector("a[href='/dropdown']");
 
     public void click(By locator){
-        driver.findElement(locator).click();
+        WaitUtils.waitForClickable(driver, locator).click();
     }
 
     public void clickFormAuthentication(){

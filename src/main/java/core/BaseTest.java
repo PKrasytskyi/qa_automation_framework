@@ -6,10 +6,9 @@ import org.testng.ITestResult;
 import org.testng.annotations.*;
 import pages.*;
 
-import java.time.Duration;
 
 
-@Listeners(listeners.TestListener.class)
+@Listeners({listeners.TestListener.class, reporting.AllureListener.class})
 public abstract class BaseTest {
 
     protected WebDriver driver;

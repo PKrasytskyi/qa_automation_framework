@@ -5,6 +5,7 @@ import data.UserLoginData;
 
 import org.testng.Assert;
 import org.testng.annotations.Test;
+import utils.WaitUtils;
 
 public class UserLoginTest extends BaseTest {
 
@@ -46,12 +47,13 @@ public class UserLoginTest extends BaseTest {
 
         login(name, pass);
         getSecureAreaPage().clickLogoutButton();
+        WaitUtils.waitForUrlContains(driver, "/login");
 
         String actualResult = getLoginPage().getFlashText();
         Assert.assertTrue(actualResult.contains(SUCCESS_LOGOUT_MESSAGE), "Expected success logout message not found");
     }
 
-    @Test(dataProvider = "emptyLoginPass", dataProviderClass = UserLoginData.class)
+    @Test(dataProvider = "invalidUsernameData", dataProviderClass = UserLoginData.class)
     public void shouldShowErrorWithInvalidUserName(String name, String pass){
 
         login(name, pass);

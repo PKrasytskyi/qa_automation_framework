@@ -7,22 +7,26 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.io.FileHandler;
 
 import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 
 public class ScreenshotUtils {
 
 
     public static String takeScreenshot(WebDriver driver, String testName){
 
-        String path = ConfigReader.getScreenshotPath() + testName + "_" + System.currentTimeMillis() + ".png";
+        Path directory = Path.of(ConfigReader.getScreenshotPath());
+        Path screenshotPath = directory.resolve(testName + "_" + System.currentTimeMillis() + ".png");
 
         try{
+            Files.createDirectories(directory);
             File src = ((TakesScreenshot) driver).getScreenshotAs(OutputType.FILE);
-
-            FileHandler.copy(src, new File(path));
+            FileHandler.copy(src, new File(screenshotPath.toString()));
         }
-        catch (Exception e){
-            e.printStackTrace();
+        catch (IOException e){
+            throw new RuntimeException("Failed to persist screenshot to " + screenshotPath, e);
         }
-        return path;
+        return screenshotPath.toString();
     }
 }

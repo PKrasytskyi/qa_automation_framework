@@ -18,10 +18,10 @@ public class UserLoginData {
         };
     }
 
-    @DataProvider(name = "emptyLoginPass")
-    public Object[][] emptyLoginPass(){
+    @DataProvider(name = "invalidUsernameData")
+    public Object[][] invalidUsernameData(){
         return new Object[][]{
-                    {"", ""}
+                    {"wrong-user", "SuperSecretPassword!"}
         };
     }
 }

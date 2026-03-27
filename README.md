@@ -1,138 +1,99 @@
-# 🧪 QA Automation Framework (Java + Selenium + TestNG + Allure)
+# QA Automation Framework
 
-This project is a **UI Test Automation Framework** built with **Java, Selenium WebDriver, TestNG, and Allure Reporting**.  
-It demonstrates best practices in test automation, including **Page Object Model, data-driven testing, and CI/CD integration**.
+UI test automation framework built with Java 17, Selenium WebDriver, TestNG, and Allure.
 
----
+## What is included
 
-## 🚀 Features
+- Page Object Model for UI flows
+- TestNG-based suite execution
+- Allure reporting with screenshots on failure
+- Configurable browser, base URL, and timeouts
+- GitHub Actions workflow for CI execution
 
-- ✅ **Java + Selenium WebDriver**
-- ✅ **TestNG** for test execution and configuration
-- ✅ **Page Object Model (POM)** for maintainable UI tests
-- ✅ **Data-driven testing** using TestNG DataProviders
-- ✅ **Allure Reports** with screenshots on failure
-- ✅ **Centralized test setup (BaseTest)**
-- ✅ **Environment configuration (config.properties + env variables)**
-- ✅ **GitHub Actions CI/CD pipeline**
+## Project structure
 
----
-
-## 🧱 Project Structure
-
-```
+```text
 src
- └── test
-     ├── java
-     │   ├── data          # DataProviders and test data
-     │   ├── pages         # Page Object classes (MainPage, LoginPage, SecurePage)
-     │   ├── core          # BaseTest setup and driver management
-     │   ├── tests         # Test classes (login, logout scenarios)
-     │   └── utils         # Helper utilities and listeners
-     └── resources
-         ├── config.properties
-         └── testng.xml
+|-- main/java
+|   |-- config
+|   |-- core
+|   |-- data
+|   |-- driver
+|   |-- listeners
+|   |-- pages
+|   |-- reporting
+|   `-- utils
+`-- test
+    |-- java/tests/ui
+    `-- resources
 ```
 
----
+## Configuration
 
-## ⚙️ Configuration
+Default configuration lives in [config.properties](C:\Users\demra\IdeaProjects\UI_API\src\test\resources\config.properties).
 
-The framework supports both:
-- 📄 `config.properties` (default values)
-- 🌍 **Environment Variables** (for CI/CD and secure data)
+Supported properties:
 
-### Example `config.properties`
-```
-base.url=https://the-internet.herokuapp.com
+```properties
+baseUrl=https://the-internet.herokuapp.com/
 browser=chrome
-headless=false
+headless=true
 explicit.wait=10
+page.load.timeout=30
+screenshotPath=reports/screenshots/
 ```
 
-### Example ENV variables
+Environment variables override file values when present:
+
+```text
+BASE_URL
+BROWSER
+HEADLESS
+EXPLICIT_WAIT
+PAGE_LOAD_TIMEOUT
+SCREENSHOT_PATH
 ```
-BASE_URL=https://the-internet.herokuapp.com
-BROWSER=chrome
-HEADLESS=true
-USERNAME=tomsmith
-PASSWORD=SuperSecretPassword!
-```
 
----
+## Running tests
 
-## 🧪 Test Scenarios
+Prerequisites:
 
-Implemented test cases include:
-
-- 🔐 Login with valid credentials
-- ❌ Login with invalid credentials
-- 🚪 Logout functionality
-
----
-
-## ▶️ How to Run Tests
-
-### Prerequisites
 - Java 17+
 - Maven 3.9+
-- Chrome browser
+- Chrome installed
 
-### Run tests locally
-```
-mvn clean test -DsuiteXmlFile=testng.xml
-```
+Run the full suite:
 
-### Run in headless mode
-```
-mvn clean test -Dheadless=true
+```bash
+mvn clean test
 ```
 
----
+Override settings from the command line:
 
-## 📊 Allure Report
-
-### Generate report
+```bash
+BASE_URL=https://the-internet.herokuapp.com/ HEADLESS=true mvn clean test
 ```
+
+Generate and open Allure report:
+
+```bash
 mvn allure:serve
 ```
 
----
+## CI
 
-## 🔄 CI/CD (GitHub Actions)
+GitHub Actions workflow is stored in [ci.yml](C:\Users\demra\IdeaProjects\UI_API\.github\workflows\ci.yml).
 
-The project includes a CI pipeline located in:
-```
-.github/workflows/maven.yml
-```
+The workflow:
 
----
+- checks out the repository
+- installs Java 17
+- caches Maven dependencies
+- runs `mvn clean test`
+- uploads Surefire and Allure artifacts
 
-## 🧩 Technologies Used
+## Notes
 
-- Java 17  
-- Selenium WebDriver  
-- TestNG  
-- Maven  
-- Allure Reports  
-- WebDriverManager  
-- GitHub Actions  
-
----
-
-## 👨‍💻 Author
-
-Petro Krasytskyi  
-QA Automation Engineer  
-
-GitHub: https://github.com/PKrasytskyi  
-LinkedIn: https://linkedin.com/in/petro-krasytskyi-54a7b918b  
-
----
-
-## 🏁 Future Improvements
-
-- Add API tests (RestAssured)  
-- Implement Docker + Selenium Grid  
-- Add parallel test execution  
-- Improve reporting with Allure history  
+- The suite is defined in [testng.xml](C:\Users\demra\IdeaProjects\UI_API\testng.xml).
+- Allure result files are written to `target/allure-results`.
+- Local screenshots are written to `reports/screenshots/`.

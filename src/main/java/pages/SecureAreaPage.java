@@ -1,7 +1,9 @@
 package pages;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
+import utils.WaitUtils;
 
 public class SecureAreaPage {
 
@@ -13,14 +15,14 @@ public class SecureAreaPage {
 
     //Locators
     By flashText = By.id("flash");
-    By logoutButton = By.cssSelector("#content > div > a");
+    By logoutButton = By.cssSelector("a[href='/logout']");
 
     public String getFlashText(){
-       return driver.findElement(flashText).getText();
+       return WaitUtils.waitForVisible(driver, flashText).getText();
     }
 
     public void clickLogoutButton(){
-        driver.findElement(logoutButton).click();
+        ((JavascriptExecutor) driver).executeScript("arguments[0].click();", WaitUtils.waitForClickable(driver, logoutButton));
     }
 
     public boolean isPageOpened(){
@@ -28,6 +30,6 @@ public class SecureAreaPage {
     }
 
     public boolean isLogoutButtonVisible(){
-        return driver.findElement(logoutButton).isDisplayed();
+        return WaitUtils.waitForVisible(driver, logoutButton).isDisplayed();
     }
 }
