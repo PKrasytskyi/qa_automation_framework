@@ -17,7 +17,7 @@ public class UserLoginTest extends BaseTest {
     private static final String DIRECT_SECUREAREA_ERROR_MESSAGE = "You must login to view the secure area!";
 
     private void login(String name, String pass){
-        getMainPage().clickFormAuthentication();
+        getMainPage().openFormAuthentication();
         getLoginPage().login(name, pass);
     }
 

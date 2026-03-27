@@ -12,7 +12,7 @@ public class CheckboxesTests extends BaseTest {
     public void selectCheckBox1(String name){
 
 
-        getMainPage().clickCheckboxes();
+        getMainPage().openCheckboxes();
         getCheckBoxPage().selectCheckbox(name);
         Assert.assertTrue(getCheckBoxPage().isSelected(name), "Checkbox " + name + " is not selected");
 
@@ -21,7 +21,7 @@ public class CheckboxesTests extends BaseTest {
     @Test(dataProvider = "secondCheckbox", dataProviderClass = CheckboxesData.class)
     public void deselectCheckBox2(String name){
 
-        getMainPage().clickCheckboxes();
+        getMainPage().openCheckboxes();
         getCheckBoxPage().deselectCheckBox(name);
         Assert.assertFalse(getCheckBoxPage().isSelected(name), "Checkbox " + name + " is selected");
     }
@@ -29,7 +29,7 @@ public class CheckboxesTests extends BaseTest {
     @Test(dataProvider = "allCheckboxes", dataProviderClass = CheckboxesData.class)
     public void shouldSelectAllCheckboxes(String... names){
 
-        getMainPage().clickCheckboxes();
+        getMainPage().openCheckboxes();
         getCheckBoxPage().selectAllCheckBoxes(names);
         Assert.assertTrue(getCheckBoxPage().isAllCheckBoxesSelected(names), "Checkboxes is not selected");
     }
@@ -37,7 +37,7 @@ public class CheckboxesTests extends BaseTest {
     @Test(dataProvider = "allCheckboxes", dataProviderClass = CheckboxesData.class)
     public void shouldDeselectAllCheckboxes(String... names){
 
-        getMainPage().clickCheckboxes();
+        getMainPage().openCheckboxes();
         getCheckBoxPage().deselectAllCheckBoxes(names);
         Assert.assertFalse(getCheckBoxPage().isAllCheckBoxesSelected(names), "Checkboxes are selected");
     }

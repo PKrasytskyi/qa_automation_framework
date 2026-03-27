@@ -1,5 +1,6 @@
 package reporting;
 
+import core.BaseTest;
 import io.qameta.allure.Allure;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.TakesScreenshot;
@@ -16,8 +17,7 @@ public class AllureListener implements ITestListener {
 
     @Override
     public void onTestFailure(ITestResult result) {
-        Object testClass = result.getInstance();
-        WebDriver driver = getDriver();
+        WebDriver driver = resolveDriver(result);
 
         if (driver != null) {
             byte[] screenshot = ((TakesScreenshot) driver).getScreenshotAs(OutputType.BYTES);
@@ -39,4 +39,14 @@ public class AllureListener implements ITestListener {
 
     @Override
     public void onFinish(ITestContext context) { }
+
+    private WebDriver resolveDriver(ITestResult result) {
+        Object instance = result.getInstance();
+
+        if (instance instanceof BaseTest baseTest && baseTest.getDriver() != null) {
+            return baseTest.getDriver();
+        }
+
+        return getDriver();
+    }
 }

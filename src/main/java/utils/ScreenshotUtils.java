@@ -15,6 +15,9 @@ public class ScreenshotUtils {
 
 
     public static String takeScreenshot(WebDriver driver, String testName){
+        if (driver == null) {
+            return null;
+        }
 
         Path directory = Path.of(ConfigReader.getScreenshotPath());
         Path screenshotPath = directory.resolve(testName + "_" + System.currentTimeMillis() + ".png");
@@ -26,6 +29,9 @@ public class ScreenshotUtils {
         }
         catch (IOException e){
             throw new RuntimeException("Failed to persist screenshot to " + screenshotPath, e);
+        }
+        catch (ClassCastException e) {
+            throw new RuntimeException("Current driver does not support screenshots", e);
         }
         return screenshotPath.toString();
     }

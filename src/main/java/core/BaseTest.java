@@ -2,6 +2,7 @@ package core;
 
 import config.ConfigReader;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.support.ui.Select;
 import org.testng.ITestResult;
 import org.testng.annotations.*;
 import pages.*;
@@ -18,6 +19,7 @@ public abstract class BaseTest {
     protected CheckBoxPage checkBoxPage;
     protected InputsPage inputsPage;
     protected DropDownPage dropDownPage;
+    protected AddRemoveElementsPage addRemoveElementsPage;
 
     private void resetPages(){
         mainPage = null;
@@ -26,6 +28,7 @@ public abstract class BaseTest {
         checkBoxPage = null;
         inputsPage = null;
         dropDownPage = null;
+        addRemoveElementsPage = null;
     }
 
     @BeforeMethod
@@ -77,6 +80,17 @@ public abstract class BaseTest {
             dropDownPage = new DropDownPage(driver);
         }
         return dropDownPage;
+    }
+
+    protected AddRemoveElementsPage getAddRemoveElementsPage(){
+        if(addRemoveElementsPage ==null){
+            addRemoveElementsPage = new AddRemoveElementsPage(driver);
+        }
+        return addRemoveElementsPage;
+    }
+
+    public WebDriver getDriver() {
+        return driver != null ? driver : DriverFactory.getDriver();
     }
 
     @AfterMethod

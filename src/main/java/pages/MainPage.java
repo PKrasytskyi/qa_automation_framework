@@ -16,16 +16,17 @@ public class MainPage {
     By checkboxes = By.cssSelector("a[href='/checkboxes']");
     By inputsPage = By.cssSelector("a[href='/inputs']");
     By dropDownPage = By.cssSelector("a[href='/dropdown']");
+    By addRemoveElements = By.cssSelector("a[href='/add_remove_elements/']");
 
     public void click(By locator){
         WaitUtils.waitForClickable(driver, locator).click();
     }
 
-    public void clickFormAuthentication(){
+    public void openFormAuthentication(){
         click(formAuthentication);
     }
 
-    public void clickCheckboxes(){
+    public void openCheckboxes(){
         click(checkboxes);
     }
 
@@ -36,6 +37,8 @@ public class MainPage {
     public void openDropDownPage(){
         click(dropDownPage);
     }
+
+    public void openAddRemoveElementsPage(){ click(addRemoveElements);}
 
 }
 
