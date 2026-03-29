@@ -66,7 +66,7 @@ Supported properties:
 ```properties
 baseUrl=https://the-internet.herokuapp.com/
 browser=chrome
-headless=true
+headless=false
 explicit.wait=10
 page.load.timeout=30
 screenshotPath=reports/screenshots/
