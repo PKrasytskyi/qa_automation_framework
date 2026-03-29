@@ -1,6 +1,10 @@
 # QA Automation Framework
 
-UI test automation framework built with Java 17, Selenium WebDriver, TestNG, and Allure.
+Java-based UI automation framework for web testing with Selenium WebDriver, TestNG, Allure reporting, and GitHub Actions CI. Includes configurable execution, failure screenshots, and experimental AI-assisted failure triage for debugging failed tests.
+
+## Why This Project
+
+This project demonstrates how to build a maintainable UI automation framework rather than a collection of isolated tests. It focuses on reusable page objects, centralized configuration, suite-based execution, reporting, and CI readiness. As an extra exploration, it also includes experimental AI-assisted failure triage for failed UI runs.
 
 ## What is included
 
@@ -30,6 +34,28 @@ src
     |-- java/tests/ui
     `-- resources
 ```
+
+## Covered Flows
+
+- Login with valid credentials
+- Validation for invalid username and invalid password
+- Logout flow
+- Direct navigation protection for secured pages
+- Session persistence after browser refresh
+- Inputs field behavior
+- Checkboxes interactions
+- Dropdown selection
+- Add/Remove elements interactions
+
+## Architecture
+
+- `core` - driver lifecycle and base test setup
+- `pages` - Page Object Model classes
+- `data` - test data providers
+- `listeners` - screenshots, failure context, and AI triage hooks
+- `utils` - waits, screenshots, and helper utilities
+- `.github/workflows` - CI execution
+
 
 ## Configuration
 
@@ -119,7 +145,7 @@ Pass your own task:
 mvn -q "-Dexec.mainClass=api.OpenAiAgentDemo" "-Dexec.args=Create regression ideas for dropdown coverage" exec:java
 ```
 
-## OpenAI agent and triage
+## Experimental AI-Assisted Failure Triage
 
 The project now includes [OpenAiAgentService.java](C:\Users\demra\IdeaProjects\UI_API\src\main\java\api\OpenAiAgentService.java), a small wrapper around the OpenAI Responses API for QA-oriented prompts.
 
