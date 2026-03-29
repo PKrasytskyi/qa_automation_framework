@@ -9,7 +9,7 @@ import java.time.Duration;
 
 public class BrowserManager {
 
-    public static WebDriver createDriver(String browser){
+    public static WebDriver createDriver(String browser) {
 
         return switch (browser.toLowerCase()) {
             case "chrome" -> createChrome();
@@ -18,11 +18,11 @@ public class BrowserManager {
         };
     }
 
-    private static WebDriver createChrome(){
+    private static WebDriver createChrome() {
 
         ChromeOptions options = new ChromeOptions();
 
-        if(ConfigReader.isHeadless()){
+        if (ConfigReader.isHeadless()) {
             options.addArguments("--headless=new");
             options.addArguments("--window-size=1920,1080");
             options.addArguments("--disable-gpu");

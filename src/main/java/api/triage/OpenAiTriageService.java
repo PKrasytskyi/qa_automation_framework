@@ -24,15 +24,15 @@ public class OpenAiTriageService {
 
     private final OpenAiAgentService agentService;
 
-    public OpenAiTriageService(){
+    public OpenAiTriageService() {
         this(null);
     }
 
-    public OpenAiTriageService(OpenAiAgentService agentService){
+    public OpenAiTriageService(OpenAiAgentService agentService) {
         this.agentService = agentService;
     }
 
-    public Optional<TriageDecision> triage(FailureContext context){
+    public Optional<TriageDecision> triage(FailureContext context) {
         if (!ConfigReader.isAgentEnabled()) {
             return Optional.empty();
         }
@@ -57,7 +57,7 @@ public class OpenAiTriageService {
         }
     }
 
-    private String buildUserTask(FailureContext context){
+    private String buildUserTask(FailureContext context) {
         return """
                 Analyze this failure UI test.
                 
@@ -108,12 +108,12 @@ public class OpenAiTriageService {
         );
     }
 
-    private TriageDecision parseDecision(String rawResponse){
+    private TriageDecision parseDecision(String rawResponse) {
 
         return TriageDecision.humanReview(rawResponse);
     }
 
-    private String safe(String value){
+    private String safe(String value) {
         return value == null ? "" : value;
     }
 }

@@ -6,8 +6,8 @@ public class CheckboxesData {
 
     @DataProvider(name = "firstCheckbox")
     public Object[][] firstCheckbox() {
-            return new Object[][]{
-            {"checkbox 1"}
+        return new Object[][]{
+                {"checkbox 1"}
         };
     }
 
@@ -19,7 +19,7 @@ public class CheckboxesData {
     }
 
     @DataProvider(name = "allCheckboxes")
-    public Object[][] allCheckboxes(){
+    public Object[][] allCheckboxes() {
         return new Object[][]{
                 {"checkbox 1", "checkbox 2"}
         };

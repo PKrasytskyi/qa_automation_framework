@@ -67,16 +67,20 @@ public class AllureListener implements ITestListener, IInvokedMethodListener {
     }
 
     @Override
-    public void onTestSuccess(ITestResult result) { }
+    public void onTestSuccess(ITestResult result) {
+    }
 
     @Override
-    public void onTestSkipped(ITestResult result) { }
+    public void onTestSkipped(ITestResult result) {
+    }
 
     @Override
-    public void onStart(ITestContext context) { }
+    public void onStart(ITestContext context) {
+    }
 
     @Override
-    public void onFinish(ITestContext context) { }
+    public void onFinish(ITestContext context) {
+    }
 
     private WebDriver resolveDriver(ITestResult result) {
         Object instance = result.getInstance();

@@ -16,14 +16,14 @@ public class UserLoginTest extends BaseTest {
     private static final String DIRECT_SECUREAREA_LINK = "https://the-internet.herokuapp.com/secure";
     private static final String DIRECT_SECUREAREA_ERROR_MESSAGE = "You must login to view the secure area!";
 
-    private void login(String name, String pass){
+    private void login(String name, String pass) {
         getMainPage().openFormAuthentication();
         getLoginPage().login(name, pass);
     }
 
 
     @Test(dataProvider = "validUserData", dataProviderClass = UserLoginData.class, groups = {"ui", "smoke"})
-    public void shouldLoginWithValidCredentials(String name,String pass){
+    public void shouldLoginWithValidCredentials(String name, String pass) {
 
         login(name, pass);
 
@@ -34,7 +34,7 @@ public class UserLoginTest extends BaseTest {
     }
 
     @Test(dataProvider = "invalidUserData", dataProviderClass = UserLoginData.class, groups = {"ui", "smoke"})
-    public void shouldShowErrorWithInvalidPassword(String name, String pass){
+    public void shouldShowErrorWithInvalidPassword(String name, String pass) {
 
         login(name, pass);
 
@@ -54,7 +54,7 @@ public class UserLoginTest extends BaseTest {
     }
 
     @Test(dataProvider = "invalidUsernameData", dataProviderClass = UserLoginData.class, groups = {"ui", "smoke"})
-    public void shouldShowErrorWithInvalidUserName(String name, String pass){
+    public void shouldShowErrorWithInvalidUserName(String name, String pass) {
 
         login(name, pass);
         String actualResult = getLoginPage().getFlashText();
@@ -62,7 +62,7 @@ public class UserLoginTest extends BaseTest {
     }
 
     @Test(dataProvider = "validUserData", dataProviderClass = UserLoginData.class, groups = {"ui", "smoke"})
-    public void shouldKeepSessionAfterRefresh(String name, String pass){
+    public void shouldKeepSessionAfterRefresh(String name, String pass) {
 
         login(name, pass);
         driver.navigate().refresh();
@@ -71,7 +71,7 @@ public class UserLoginTest extends BaseTest {
     }
 
     @Test(groups = {"ui", "smoke"})
-    public void shouldRedirectToLoginWhenAccessingSecureAreaDirectly(){
+    public void shouldRedirectToLoginWhenAccessingSecureAreaDirectly() {
 
         driver.get(DIRECT_SECUREAREA_LINK);
 

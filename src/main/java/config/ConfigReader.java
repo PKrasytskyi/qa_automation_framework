@@ -25,32 +25,32 @@ public class ConfigReader {
                 properties.load(is);
             }
 
-        } catch (Exception e){
+        } catch (Exception e) {
             throw new RuntimeException("Failed to load config file", e);
         }
     }
 
-    public static String getBrowser(){
+    public static String getBrowser() {
         return getString("browser", "BROWSER", DEFAULT_BROWSER);
     }
 
-    public static String getBaseUrl(){
+    public static String getBaseUrl() {
         return getString(new String[]{"baseUrl", "base.url"}, "BASE_URL", DEFAULT_BASE_URL);
     }
 
-    public static int getTimeout(){
+    public static int getTimeout() {
         return getInt(new String[]{"explicit.wait", "timeout"}, "EXPLICIT_WAIT", DEFAULT_EXPLICIT_WAIT);
     }
 
-    public static int getPageLoadTimeout(){
+    public static int getPageLoadTimeout() {
         return getInt("page.load.timeout", "PAGE_LOAD_TIMEOUT", DEFAULT_PAGE_LOAD_TIMEOUT);
     }
 
-    public static boolean isHeadless(){
+    public static boolean isHeadless() {
         return getBoolean("headless", "HEADLESS", false);
     }
 
-    public static String getScreenshotPath(){
+    public static String getScreenshotPath() {
         return getString("screenshotPath", "SCREENSHOT_PATH", DEFAULT_SCREENSHOT_PATH);
     }
 
@@ -74,9 +74,13 @@ public class ConfigReader {
         return getBoolean("agent.enabled", "AGENT_ENABLED", false);
     }
 
-    public static boolean isAgentTriageMode(){return "triage".equalsIgnoreCase(getAgentMode());}
+    public static boolean isAgentTriageMode() {
+        return "triage".equalsIgnoreCase(getAgentMode());
+    }
 
-    public static int getAgentTimeoutSeconds(){return getInt("agent.timeout.seconds", "AGENT_TIMEOUT_SECONDS", 30);}
+    public static int getAgentTimeoutSeconds() {
+        return getInt("agent.timeout.seconds", "AGENT_TIMEOUT_SECONDS", 30);
+    }
 
     public static String getAgentMode() {
         return getString("agent.mode", "AGENT_MODE", "off");

@@ -5,7 +5,7 @@ import org.testng.annotations.DataProvider;
 public class InputsData {
 
     @DataProvider(name = "inputsFieldValues")
-    public Object[][] inputsValue(){
+    public Object[][] inputsValue() {
         return new Object[][]{
                 {"2321"},
                 {"6435"},
@@ -14,7 +14,7 @@ public class InputsData {
     }
 
     @DataProvider(name = "oneValue")
-    public Object[][] oneValue(){
+    public Object[][] oneValue() {
         return new Object[][]{
                 {"1"}
         };

@@ -10,7 +10,7 @@ public record TriageDecision(
         String summary
 ) {
 
-    public static TriageDecision humanReview(String summary){
+    public static TriageDecision humanReview(String summary) {
         return new TriageDecision(
                 "unknown",
                 "Insufficient evidence for automatic classification",
@@ -22,7 +22,7 @@ public record TriageDecision(
         );
     }
 
-    public static TriageDecision skipped(String summary){
+    public static TriageDecision skipped(String summary) {
         return new TriageDecision(
                 "skipped",
                 "AI triage was skipped",
@@ -34,7 +34,7 @@ public record TriageDecision(
         );
     }
 
-    public String toAttachmentText(){
+    public String toAttachmentText() {
         return """
                 failureType: %s
                 probableRootCause: %s
@@ -44,17 +44,17 @@ public record TriageDecision(
                 suggestedFix: %s
                 summary: %s
                 """.formatted(
-                        safe(failureType),
-                        safe(probableRootCause),
-                        confidence,
-                        rerunRecommended,
-                        needsHumanReview,
-                        safe(suggestedFix),
-                        safe(summary)
+                safe(failureType),
+                safe(probableRootCause),
+                confidence,
+                rerunRecommended,
+                needsHumanReview,
+                safe(suggestedFix),
+                safe(summary)
         );
     }
 
-    private String safe(String value){
+    private String safe(String value) {
         return value == null ? "" : value;
     }
 

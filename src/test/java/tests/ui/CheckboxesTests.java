@@ -9,7 +9,7 @@ public class CheckboxesTests extends BaseTest {
 
 
     @Test(dataProvider = "firstCheckbox", dataProviderClass = CheckboxesData.class, groups = {"smoke"})
-    public void selectCheckBox1(String name){
+    public void selectCheckBox1(String name) {
 
 
         getMainPage().openCheckboxes();
@@ -19,7 +19,7 @@ public class CheckboxesTests extends BaseTest {
     }
 
     @Test(dataProvider = "secondCheckbox", dataProviderClass = CheckboxesData.class, groups = {"smoke"})
-    public void deselectCheckBox2(String name){
+    public void deselectCheckBox2(String name) {
 
         getMainPage().openCheckboxes();
         getCheckBoxPage().deselectCheckBox(name);
@@ -27,7 +27,7 @@ public class CheckboxesTests extends BaseTest {
     }
 
     @Test(dataProvider = "allCheckboxes", dataProviderClass = CheckboxesData.class, groups = {"ui"})
-    public void shouldSelectAllCheckboxes(String... names){
+    public void shouldSelectAllCheckboxes(String... names) {
 
         getMainPage().openCheckboxes();
         getCheckBoxPage().selectAllCheckBoxes(names);
@@ -35,7 +35,7 @@ public class CheckboxesTests extends BaseTest {
     }
 
     @Test(dataProvider = "allCheckboxes", dataProviderClass = CheckboxesData.class, groups = {"ui"})
-    public void shouldDeselectAllCheckboxes(String... names){
+    public void shouldDeselectAllCheckboxes(String... names) {
 
         getMainPage().openCheckboxes();
         getCheckBoxPage().deselectAllCheckBoxes(names);

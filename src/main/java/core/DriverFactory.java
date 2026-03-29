@@ -7,9 +7,9 @@ import org.openqa.selenium.WebDriver;
 
 public class DriverFactory {
 
-    private static ThreadLocal<WebDriver> driver = new ThreadLocal<>();
+    private static final ThreadLocal<WebDriver> driver = new ThreadLocal<>();
 
-    public static WebDriver InitDriver(){
+    public static WebDriver InitDriver() {
 
         String browser = ConfigReader.getBrowser();
 
@@ -19,13 +19,13 @@ public class DriverFactory {
         return webDriver;
     }
 
-    public static WebDriver getDriver(){
+    public static WebDriver getDriver() {
         return driver.get();
     }
 
-    public static void quitDriver(){
+    public static void quitDriver() {
 
-        if (driver.get() != null){
+        if (driver.get() != null) {
             driver.get().quit();
             driver.remove();
         }

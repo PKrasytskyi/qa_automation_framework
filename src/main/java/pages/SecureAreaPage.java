@@ -9,7 +9,7 @@ public class SecureAreaPage {
 
     WebDriver driver;
 
-    public SecureAreaPage(WebDriver driver){
+    public SecureAreaPage(WebDriver driver) {
         this.driver = driver;
     }
 
@@ -17,19 +17,19 @@ public class SecureAreaPage {
     By flashText = By.id("flash");
     By logoutButton = By.cssSelector("a[href='/logout']");
 
-    public String getFlashText(){
-       return WaitUtils.waitForVisible(driver, flashText).getText();
+    public String getFlashText() {
+        return WaitUtils.waitForVisible(driver, flashText).getText();
     }
 
-    public void clickLogoutButton(){
+    public void clickLogoutButton() {
         ((JavascriptExecutor) driver).executeScript("arguments[0].click();", WaitUtils.waitForClickable(driver, logoutButton));
     }
 
-    public boolean isPageOpened(){
-       return driver.getCurrentUrl().contains("secure");
+    public boolean isPageOpened() {
+        return driver.getCurrentUrl().contains("secure");
     }
 
-    public boolean isLogoutButtonVisible(){
+    public boolean isLogoutButtonVisible() {
         return WaitUtils.waitForVisible(driver, logoutButton).isDisplayed();
     }
 }

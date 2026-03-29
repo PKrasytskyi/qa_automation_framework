@@ -8,7 +8,7 @@ import org.testng.annotations.Test;
 public class AddRemoveElementsTests extends BaseTest {
 
     @Test(dataProvider = "elementsCount", dataProviderClass = AddRemoveElementsData.class, groups = {"ui"})
-    public void shouldAddElements(int count){
+    public void shouldAddElements(int count) {
 
         getMainPage().openAddRemoveElementsPage();
         getAddRemoveElementsPage().addElements(count);
@@ -20,7 +20,7 @@ public class AddRemoveElementsTests extends BaseTest {
     }
 
     @Test(dataProvider = "addAndDelete", dataProviderClass = AddRemoveElementsData.class, groups = {"ui"})
-    public void addAndDeleteElements(int add, int delete){
+    public void addAndDeleteElements(int add, int delete) {
 
         getMainPage().openAddRemoveElementsPage();
         getAddRemoveElementsPage().addElements(add);

@@ -14,7 +14,6 @@ import java.util.List;
 public final class FailureContextBuilder {
 
 
-
     private final WebDriver driver;
 
     public FailureContextBuilder(WebDriver driver) {

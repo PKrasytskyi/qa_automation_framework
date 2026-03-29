@@ -13,8 +13,6 @@ import org.testng.annotations.*;
 import pages.*;
 
 
-
-
 @Listeners({TestListener.class, AllureListener.class, AgentTriageListener.class})
 public abstract class BaseTest {
 
@@ -27,7 +25,7 @@ public abstract class BaseTest {
     protected DropDownPage dropDownPage;
     protected AddRemoveElementsPage addRemoveElementsPage;
 
-    private void resetPages(){
+    private void resetPages() {
         mainPage = null;
         loginPage = null;
         secureAreaPage = null;
@@ -38,7 +36,7 @@ public abstract class BaseTest {
     }
 
     @BeforeMethod(alwaysRun = true)
-    public void setUp(){
+    public void setUp() {
 
         driver = DriverFactory.InitDriver();
         driver.get(ConfigReader.getBaseUrl());
@@ -46,50 +44,50 @@ public abstract class BaseTest {
 
     }
 
-    protected MainPage getMainPage(){
-        if(mainPage == null) {
+    protected MainPage getMainPage() {
+        if (mainPage == null) {
             mainPage = new MainPage(driver);
         }
         return mainPage;
     }
 
-    protected LoginPage getLoginPage(){
-        if(loginPage == null){
+    protected LoginPage getLoginPage() {
+        if (loginPage == null) {
             loginPage = new LoginPage(driver);
         }
         return loginPage;
     }
 
-    protected SecureAreaPage getSecureAreaPage(){
-        if(secureAreaPage == null){
+    protected SecureAreaPage getSecureAreaPage() {
+        if (secureAreaPage == null) {
             secureAreaPage = new SecureAreaPage(driver);
         }
         return secureAreaPage;
     }
 
-    protected CheckBoxPage getCheckBoxPage(){
-        if(checkBoxPage == null){
+    protected CheckBoxPage getCheckBoxPage() {
+        if (checkBoxPage == null) {
             checkBoxPage = new CheckBoxPage(driver);
         }
         return checkBoxPage;
     }
 
-    protected InputsPage getInputsPage(){
-        if(inputsPage == null){
+    protected InputsPage getInputsPage() {
+        if (inputsPage == null) {
             inputsPage = new InputsPage(driver);
         }
         return inputsPage;
     }
 
-    protected DropDownPage getDropDownPage(){
-        if(dropDownPage == null){
+    protected DropDownPage getDropDownPage() {
+        if (dropDownPage == null) {
             dropDownPage = new DropDownPage(driver);
         }
         return dropDownPage;
     }
 
-    protected AddRemoveElementsPage getAddRemoveElementsPage(){
-        if(addRemoveElementsPage ==null){
+    protected AddRemoveElementsPage getAddRemoveElementsPage() {
+        if (addRemoveElementsPage == null) {
             addRemoveElementsPage = new AddRemoveElementsPage(driver);
         }
         return addRemoveElementsPage;
@@ -101,8 +99,8 @@ public abstract class BaseTest {
 
 
     @AfterMethod(alwaysRun = true)
-    public void tearDown(ITestResult result){
-        if (DriverFactory.getDriver() != null){
+    public void tearDown(ITestResult result) {
+        if (DriverFactory.getDriver() != null) {
             DriverFactory.quitDriver();
         }
     }

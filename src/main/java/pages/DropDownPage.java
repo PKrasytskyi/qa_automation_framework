@@ -12,14 +12,14 @@ public class DropDownPage {
 
     private final WebDriver driver;
 
-    public DropDownPage(WebDriver driver){
+    public DropDownPage(WebDriver driver) {
         this.driver = driver;
     }
 
     //Locators
     private final By dropDownList = By.id("dropdown");
 
-    public void selectOption(String option){
+    public void selectOption(String option) {
         Select select = getDropDownSelect();
         List<String> availableOptions = getOptionNames();
 
@@ -31,11 +31,11 @@ public class DropDownPage {
         }
     }
 
-    public String getSelectedOption(){
+    public String getSelectedOption() {
         return getDropDownSelect().getFirstSelectedOption().getText();
     }
 
-    public boolean isOptionSelected(String option){
+    public boolean isOptionSelected(String option) {
         return getSelectedOption().equals(option);
     }
 
