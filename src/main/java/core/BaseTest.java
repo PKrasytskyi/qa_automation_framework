@@ -1,15 +1,21 @@
 package core;
 
 import config.ConfigReader;
+import listeners.AllureListener;
+import listeners.AgentTriageListener;
+import listeners.TestListener;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.support.ui.Select;
 import org.testng.ITestResult;
+import org.testng.annotations.AfterMethod;
+import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.Listeners;
 import org.testng.annotations.*;
 import pages.*;
 
 
 
-@Listeners({listeners.TestListener.class, reporting.AllureListener.class})
+
+@Listeners({TestListener.class, AllureListener.class, AgentTriageListener.class})
 public abstract class BaseTest {
 
     protected WebDriver driver;
@@ -31,7 +37,7 @@ public abstract class BaseTest {
         addRemoveElementsPage = null;
     }
 
-    @BeforeMethod
+    @BeforeMethod(alwaysRun = true)
     public void setUp(){
 
         driver = DriverFactory.InitDriver();
@@ -93,7 +99,8 @@ public abstract class BaseTest {
         return driver != null ? driver : DriverFactory.getDriver();
     }
 
-    @AfterMethod
+
+    @AfterMethod(alwaysRun = true)
     public void tearDown(ITestResult result){
         if (DriverFactory.getDriver() != null){
             DriverFactory.quitDriver();

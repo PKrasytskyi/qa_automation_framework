@@ -2,6 +2,7 @@ target/
 .m2repo/
 reports/
 allure-results/
+.allure/
 !.mvn/wrapper/maven-wrapper.jar
 !**/src/main/**/target/
 !**/src/test/**/target/
@@ -10,6 +11,9 @@ allure-results/
 .idea/modules.xml
 .idea/jarRepositories.xml
 .idea/compiler.xml
+.idea/uiDesigner.xml
+.idea/workspace.xml
+.idea/shelf/
 .idea/libraries/
 *.iws
 *.iml
@@ -40,3 +44,9 @@ build/
 
 ### Mac OS ###
 .DS_Store
+
+### Local browser/runtime ###
+chrome/
+chromedriver/
+*.dump
+*.dumpstream

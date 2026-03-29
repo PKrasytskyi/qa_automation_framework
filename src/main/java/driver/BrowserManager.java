@@ -25,11 +25,15 @@ public class BrowserManager {
         if(ConfigReader.isHeadless()){
             options.addArguments("--headless=new");
             options.addArguments("--window-size=1920,1080");
+            options.addArguments("--disable-gpu");
+            options.addArguments("--remote-debugging-port=0");
+        } else {
+            options.addArguments("--start-maximized");
         }
 
         options.addArguments("--no-sandbox");
         options.addArguments("--disable-dev-shm-usage");
-        options.addArguments("--start-maximized");
+        options.addArguments("--disable-extensions");
 
         WebDriver driver = new ChromeDriver(options);
         driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(ConfigReader.getPageLoadTimeout()));

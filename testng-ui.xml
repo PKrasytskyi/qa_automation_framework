@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd">
+<suite name="UI Suite" parallel="none">
+    <test name="UI Tests">
+        <groups>
+            <run>
+                <include name="ui"/>
+            </run>
+        </groups>
+        <classes>
+            <class name="tests.ui.AddRemoveElementsTests"/>
+            <class name="tests.ui.CheckboxesTests"/>
+            <class name="tests.ui.DropDownTests"/>
+            <class name="tests.ui.InputsTest"/>
+            <class name="tests.ui.UserLoginTest"/>
+        </classes>
+    </test>
+</suite>

@@ -11,6 +11,9 @@ public class ConfigReader {
     private static final int DEFAULT_EXPLICIT_WAIT = 10;
     private static final int DEFAULT_PAGE_LOAD_TIMEOUT = 30;
     private static final String DEFAULT_SCREENSHOT_PATH = "reports/screenshots/";
+    private static final String DEFAULT_OPENAI_MODEL = "gpt-4.1";
+    private static final int DEFAULT_MAX_TRACE_CHARS = 8_000;
+    private static final int DEFAULT_MAX_PAGE_SOURCE_CHARS = 12_000;
 
     static {
         try {
@@ -49,6 +52,34 @@ public class ConfigReader {
 
     public static String getScreenshotPath(){
         return getString("screenshotPath", "SCREENSHOT_PATH", DEFAULT_SCREENSHOT_PATH);
+    }
+
+    public static int getAgentMaxStackTraceChars() {
+        return getInt("maxStackTraceChars", "MAX_STACK_TRACE_CHARS", DEFAULT_MAX_TRACE_CHARS);
+    }
+
+    public static int getAgentMaxPageSourceChars() {
+        return getInt("maxPageSourceChars", "MAX_PAGE_SOURCE_CHARS", DEFAULT_MAX_PAGE_SOURCE_CHARS);
+    }
+
+    public static String getOpenAiApiKey() {
+        return getString("openai.api.key", "OPENAI_API_KEY", "");
+    }
+
+    public static String getOpenAiModel() {
+        return getString("openai.model", "OPENAI_MODEL", DEFAULT_OPENAI_MODEL);
+    }
+
+    public static boolean isAgentEnabled() {
+        return getBoolean("agent.enabled", "AGENT_ENABLED", false);
+    }
+
+    public static boolean isAgentTriageMode(){return "triage".equalsIgnoreCase(getAgentMode());}
+
+    public static int getAgentTimeoutSeconds(){return getInt("agent.timeout.seconds", "AGENT_TIMEOUT_SECONDS", 30);}
+
+    public static String getAgentMode() {
+        return getString("agent.mode", "AGENT_MODE", "off");
     }
 
     private static String getString(String propertyKey, String envKey, String defaultValue) {

@@ -7,7 +7,9 @@ UI test automation framework built with Java 17, Selenium WebDriver, TestNG, and
 - Page Object Model for UI flows
 - TestNG-based suite execution
 - Allure reporting with screenshots on failure
+- Separate failure listeners for screenshots and AI triage attachments
 - Configurable browser, base URL, and timeouts
+- Optional OpenAI-powered QA agent and triage flow via API key
 - GitHub Actions workflow for CI execution
 
 ## Project structure
@@ -15,13 +17,14 @@ UI test automation framework built with Java 17, Selenium WebDriver, TestNG, and
 ```text
 src
 |-- main/java
+|   |-- api
+|   |   `-- triage
 |   |-- config
 |   |-- core
 |   |-- data
 |   |-- driver
 |   |-- listeners
 |   |-- pages
-|   |-- reporting
 |   `-- utils
 `-- test
     |-- java/tests/ui
@@ -41,6 +44,10 @@ headless=true
 explicit.wait=10
 page.load.timeout=30
 screenshotPath=reports/screenshots/
+openai.model=gpt-4.1
+agent.enabled=false
+agent.mode=off
+agent.timeout.seconds=30
 ```
 
 Environment variables override file values when present:
@@ -52,6 +59,11 @@ HEADLESS
 EXPLICIT_WAIT
 PAGE_LOAD_TIMEOUT
 SCREENSHOT_PATH
+OPENAI_API_KEY
+OPENAI_MODEL
+AGENT_ENABLED
+AGENT_MODE
+AGENT_TIMEOUT_SECONDS
 ```
 
 ## Running tests
@@ -62,16 +74,30 @@ Prerequisites:
 - Maven 3.9+
 - Chrome installed
 
-Run the full suite:
+Run the default UI suite:
 
 ```bash
 mvn clean test
 ```
 
+Run a specific TestNG suite file:
+
+```powershell
+mvn test "-Dsurefire.suiteXmlFiles=testng-ui.xml"
+```
+
+Run the smoke suite:
+
+```powershell
+mvn test "-Dsurefire.suiteXmlFiles=testng-smoke.xml"
+```
+
 Override settings from the command line:
 
-```bash
-BASE_URL=https://the-internet.herokuapp.com/ HEADLESS=true mvn clean test
+```powershell
+$env:BASE_URL="https://the-internet.herokuapp.com/"
+$env:HEADLESS="true"
+mvn clean test
 ```
 
 Generate and open Allure report:
@@ -79,6 +105,39 @@ Generate and open Allure report:
 ```bash
 mvn allure:serve
 ```
+
+Run the OpenAI QA agent demo:
+
+```powershell
+$env:OPENAI_API_KEY="your_api_key"
+mvn -q "-Dexec.mainClass=api.OpenAiAgentDemo" exec:java
+```
+
+Pass your own task:
+
+```powershell
+mvn -q "-Dexec.mainClass=api.OpenAiAgentDemo" "-Dexec.args=Create regression ideas for dropdown coverage" exec:java
+```
+
+## OpenAI agent and triage
+
+The project now includes [OpenAiAgentService.java](C:\Users\demra\IdeaProjects\UI_API\src\main\java\api\OpenAiAgentService.java), a small wrapper around the OpenAI Responses API for QA-oriented prompts.
+
+For failure triage, the project also includes:
+
+- [AgentTriageListener.java](C:\Users\demra\IdeaProjects\UI_API\src\main\java\listeners\AgentTriageListener.java)
+- [AllureListener.java](C:\Users\demra\IdeaProjects\UI_API\src\main\java\listeners\AllureListener.java)
+- [FailureContextBuilder.java](C:\Users\demra\IdeaProjects\UI_API\src\main\java\api\triage\FailureContextBuilder.java)
+
+Setup:
+
+- create an API key in the OpenAI Platform dashboard
+- set `OPENAI_API_KEY` in your environment
+- optionally override `openai.model` in [config.properties](C:\Users\demra\IdeaProjects\UI_API\src\test\resources\config.properties)
+- enable triage with `agent.enabled=true`
+- set `agent.mode=triage` to attach failure context and AI triage notes to Allure on failed tests
+
+The service is intentionally small so you can extend it with your own prompts, tool-calling loop, bug triage flow, or test-case generation logic.
 
 ## CI
 
@@ -94,6 +153,7 @@ The workflow:
 
 ## Notes
 
-- The suite is defined in [testng.xml](C:\Users\demra\IdeaProjects\UI_API\testng.xml).
+- TestNG suite files live in the project root: [testng-ui.xml](C:\Users\demra\IdeaProjects\UI_API\testng-ui.xml) and [testng-smoke.xml](C:\Users\demra\IdeaProjects\UI_API\testng-smoke.xml).
 - Allure result files are written to `target/allure-results`.
 - Local screenshots are written to `reports/screenshots/`.
+- Allure screenshot and AI triage attachments are handled by separate listeners and share a small helper: [AllureAttachmentSupport.java](C:\Users\demra\IdeaProjects\UI_API\src\main\java\listeners\AllureAttachmentSupport.java).

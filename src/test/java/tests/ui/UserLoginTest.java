@@ -22,7 +22,7 @@ public class UserLoginTest extends BaseTest {
     }
 
 
-    @Test(dataProvider = "validUserData", dataProviderClass = UserLoginData.class)
+    @Test(dataProvider = "validUserData", dataProviderClass = UserLoginData.class, groups = {"ui", "smoke"})
     public void shouldLoginWithValidCredentials(String name,String pass){
 
         login(name, pass);
@@ -33,7 +33,7 @@ public class UserLoginTest extends BaseTest {
 
     }
 
-    @Test(dataProvider = "invalidUserData", dataProviderClass = UserLoginData.class)
+    @Test(dataProvider = "invalidUserData", dataProviderClass = UserLoginData.class, groups = {"ui", "smoke"})
     public void shouldShowErrorWithInvalidPassword(String name, String pass){
 
         login(name, pass);
@@ -42,7 +42,7 @@ public class UserLoginTest extends BaseTest {
         Assert.assertTrue(actualResult.contains(ERROR_USERPASSWORD_MESSAGE), "Expected user password error message not found");
     }
 
-    @Test(dataProvider = "validUserData", dataProviderClass = UserLoginData.class)
+    @Test(dataProvider = "validUserData", dataProviderClass = UserLoginData.class, groups = {"ui", "smoke"})
     public void shouldLogoutSuccessfully(String name, String pass) {
 
         login(name, pass);
@@ -53,7 +53,7 @@ public class UserLoginTest extends BaseTest {
         Assert.assertTrue(actualResult.contains(SUCCESS_LOGOUT_MESSAGE), "Expected success logout message not found");
     }
 
-    @Test(dataProvider = "invalidUsernameData", dataProviderClass = UserLoginData.class)
+    @Test(dataProvider = "invalidUsernameData", dataProviderClass = UserLoginData.class, groups = {"ui", "smoke"})
     public void shouldShowErrorWithInvalidUserName(String name, String pass){
 
         login(name, pass);
@@ -61,7 +61,7 @@ public class UserLoginTest extends BaseTest {
         Assert.assertTrue(actualResult.contains(ERROR_USERNAME_MESSAGE), "Expected username error message not found");
     }
 
-    @Test(dataProvider = "validUserData", dataProviderClass = UserLoginData.class)
+    @Test(dataProvider = "validUserData", dataProviderClass = UserLoginData.class, groups = {"ui", "smoke"})
     public void shouldKeepSessionAfterRefresh(String name, String pass){
 
         login(name, pass);
@@ -70,7 +70,7 @@ public class UserLoginTest extends BaseTest {
         Assert.assertTrue(secureAreaPage.isPageOpened(), "Secure page is not opened after refresh");
     }
 
-    @Test
+    @Test(groups = {"ui", "smoke"})
     public void shouldRedirectToLoginWhenAccessingSecureAreaDirectly(){
 
         driver.get(DIRECT_SECUREAREA_LINK);
@@ -80,5 +80,4 @@ public class UserLoginTest extends BaseTest {
         Assert.assertTrue(getLoginPage().isPageOpened(), "Login page not opened when accessing secure URL directly");
         Assert.assertTrue(actualResult.contains(DIRECT_SECUREAREA_ERROR_MESSAGE), "Expected secure area error message not found");
     }
-
 }

@@ -7,7 +7,7 @@ import org.testng.annotations.Test;
 
 public class DropDownTests extends BaseTest {
 
-    @Test(dataProvider = "dropdownOptions", dataProviderClass = DropDownData.class)
+    @Test(dataProvider = "dropdownOptions", dataProviderClass = DropDownData.class, groups = {"ui"})
     public void shouldSelectOptionFromDropDown(String option){
         getMainPage().openDropDownPage();
         getDropDownPage().selectOption(option);

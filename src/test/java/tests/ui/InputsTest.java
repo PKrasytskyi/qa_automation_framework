@@ -7,7 +7,7 @@ import org.testng.annotations.Test;
 
 public class InputsTest extends BaseTest {
 
-    @Test(dataProvider = "inputsFieldValues", dataProviderClass = InputsData.class)
+    @Test(dataProvider = "inputsFieldValues", dataProviderClass = InputsData.class, groups = {"ui"})
     public void shouldSetInputValue(String number){
 
         getMainPage().openInputsPage();
@@ -16,7 +16,7 @@ public class InputsTest extends BaseTest {
         Assert.assertEquals(actualResult, number, "Expected: " + number + ", but was: " + actualResult);
     }
 
-    @Test(dataProvider = "oneValue", dataProviderClass = InputsData.class)
+    @Test(dataProvider = "oneValue", dataProviderClass = InputsData.class, groups = {"ui"})
     public void shouldInputFieldBeEmptyAfterRefresh(String number){
 
         getMainPage().openInputsPage();

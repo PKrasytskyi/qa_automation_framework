@@ -8,7 +8,7 @@ import org.testng.annotations.Test;
 public class CheckboxesTests extends BaseTest {
 
 
-    @Test(dataProvider = "firstCheckbox", dataProviderClass = CheckboxesData.class)
+    @Test(dataProvider = "firstCheckbox", dataProviderClass = CheckboxesData.class, groups = {"smoke"})
     public void selectCheckBox1(String name){
 
 
@@ -18,7 +18,7 @@ public class CheckboxesTests extends BaseTest {
 
     }
 
-    @Test(dataProvider = "secondCheckbox", dataProviderClass = CheckboxesData.class)
+    @Test(dataProvider = "secondCheckbox", dataProviderClass = CheckboxesData.class, groups = {"smoke"})
     public void deselectCheckBox2(String name){
 
         getMainPage().openCheckboxes();
@@ -26,7 +26,7 @@ public class CheckboxesTests extends BaseTest {
         Assert.assertFalse(getCheckBoxPage().isSelected(name), "Checkbox " + name + " is selected");
     }
 
-    @Test(dataProvider = "allCheckboxes", dataProviderClass = CheckboxesData.class)
+    @Test(dataProvider = "allCheckboxes", dataProviderClass = CheckboxesData.class, groups = {"ui"})
     public void shouldSelectAllCheckboxes(String... names){
 
         getMainPage().openCheckboxes();
@@ -34,7 +34,7 @@ public class CheckboxesTests extends BaseTest {
         Assert.assertTrue(getCheckBoxPage().isAllCheckBoxesSelected(names), "Checkboxes is not selected");
     }
 
-    @Test(dataProvider = "allCheckboxes", dataProviderClass = CheckboxesData.class)
+    @Test(dataProvider = "allCheckboxes", dataProviderClass = CheckboxesData.class, groups = {"ui"})
     public void shouldDeselectAllCheckboxes(String... names){
 
         getMainPage().openCheckboxes();
