@@ -3,18 +3,13 @@ target/
 reports/
 allure-results/
 .allure/
+out/
 !.mvn/wrapper/maven-wrapper.jar
 !**/src/main/**/target/
 !**/src/test/**/target/
 
 ### IntelliJ IDEA ###
-.idea/modules.xml
-.idea/jarRepositories.xml
-.idea/compiler.xml
-.idea/uiDesigner.xml
-.idea/workspace.xml
-.idea/shelf/
-.idea/libraries/
+.idea/
 *.iws
 *.iml
 *.ipr
