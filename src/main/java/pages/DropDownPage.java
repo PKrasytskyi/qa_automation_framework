@@ -8,12 +8,10 @@ import org.openqa.selenium.support.ui.Select;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class DropDownPage {
-
-    private final WebDriver driver;
+public class DropDownPage extends BasePage {
 
     public DropDownPage(WebDriver driver) {
-        this.driver = driver;
+        super(driver);
     }
 
     //Locators
@@ -48,7 +46,7 @@ public class DropDownPage {
     }
 
     private Select getDropDownSelect() {
-        WebElement selectElement = driver.findElement(dropDownList);
+        WebElement selectElement = findElement(dropDownList);
         return new Select(selectElement);
     }
 }

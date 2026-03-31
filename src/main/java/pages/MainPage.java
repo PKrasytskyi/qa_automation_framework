@@ -2,26 +2,19 @@ package pages;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
-import utils.WaitUtils;
 
-public class MainPage {
-
-    private final WebDriver driver;
+public class MainPage extends BasePage{
 
     public MainPage(WebDriver driver) {
-        this.driver = driver;
+        super(driver);
     }
 
     //Locators
-    By formAuthentication = By.cssSelector("a[href='/login']");
-    By checkboxes = By.cssSelector("a[href='/checkboxes']");
-    By inputsPage = By.cssSelector("a[href='/inputs']");
-    By dropDownPage = By.cssSelector("a[href='/dropdown']");
-    By addRemoveElements = By.cssSelector("a[href='/add_remove_elements/']");
-
-    public void click(By locator) {
-        WaitUtils.waitForClickable(driver, locator).click();
-    }
+    private final By formAuthentication = By.cssSelector("a[href='/login']");
+    private final By checkboxes = By.cssSelector("a[href='/checkboxes']");
+    private final By inputsPage = By.cssSelector("a[href='/inputs']");
+    private final By dropDownPage = By.cssSelector("a[href='/dropdown']");
+    private final By addRemoveElements = By.cssSelector("a[href='/add_remove_elements/']");
 
     public void openFormAuthentication() {
         click(formAuthentication);
@@ -42,6 +35,5 @@ public class MainPage {
     public void openAddRemoveElementsPage() {
         click(addRemoveElements);
     }
-
 }
 

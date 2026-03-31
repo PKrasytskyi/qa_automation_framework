@@ -1,7 +1,7 @@
 package tests.ui;
 
 import core.BaseTest;
-import data.DropDownData;
+import tests.data.DropDownData;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 

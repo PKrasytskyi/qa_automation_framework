@@ -3,12 +3,10 @@ package pages;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 
-public class AddRemoveElementsPage {
-
-    private final WebDriver driver;
+public class AddRemoveElementsPage extends BasePage {
 
     public AddRemoveElementsPage(WebDriver driver) {
-        this.driver = driver;
+        super(driver);
     }
 
     //Locators
@@ -18,12 +16,12 @@ public class AddRemoveElementsPage {
     public void addElements(int count) {
 
         for (int y = 1; y <= count; y++) {
-            driver.findElement(addElementButton).click();
+            click(addElementButton);
         }
     }
 
     public int getAddedElementsCount() {
-        return driver.findElements(deleteElementButton).size();
+        return findElements(deleteElementButton).size();
     }
 
     public void removeElements(int count) {
@@ -36,7 +34,7 @@ public class AddRemoveElementsPage {
         }
 
         for (int y = count; y >= 1; y--) {
-            driver.findElements(deleteElementButton).get(0).click();
+            findElements(deleteElementButton).get(0).click();
         }
     }
 }

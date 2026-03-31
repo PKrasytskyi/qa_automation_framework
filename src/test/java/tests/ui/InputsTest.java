@@ -1,7 +1,7 @@
 package tests.ui;
 
 import core.BaseTest;
-import data.InputsData;
+import tests.data.InputsData;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
@@ -11,7 +11,7 @@ public class InputsTest extends BaseTest {
     public void shouldSetInputValue(String number) {
 
         getMainPage().openInputsPage();
-        getInputsPage().setInputsData(number);
+        getInputsPage().enterInputData(number);
         String actualResult = getInputsPage().getInputFieldValue();
         Assert.assertEquals(actualResult, number, "Expected: " + number + ", but was: " + actualResult);
     }
@@ -20,8 +20,8 @@ public class InputsTest extends BaseTest {
     public void shouldInputFieldBeEmptyAfterRefresh(String number) {
 
         getMainPage().openInputsPage();
-        getInputsPage().setInputsData(number);
-        driver.navigate().refresh();
+        getInputsPage().enterInputData(number);
+        getInputsPage().refreshPage();
         Assert.assertTrue(getInputsPage().getInputFieldValue().isEmpty(), "Input field is not empty " + getInputsPage().getInputFieldValue());
     }
 }

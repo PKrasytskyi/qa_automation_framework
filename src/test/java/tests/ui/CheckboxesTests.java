@@ -1,7 +1,7 @@
 package tests.ui;
 
 import core.BaseTest;
-import data.CheckboxesData;
+import tests.data.CheckboxesData;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 

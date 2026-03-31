@@ -1,4 +1,4 @@
-package data;
+package tests.data;
 
 import org.testng.annotations.DataProvider;
 

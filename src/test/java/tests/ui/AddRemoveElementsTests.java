@@ -1,7 +1,7 @@
 package tests.ui;
 
 import core.BaseTest;
-import data.AddRemoveElementsData;
+import tests.data.AddRemoveElementsData;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 

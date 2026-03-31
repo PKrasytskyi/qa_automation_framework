@@ -3,23 +3,24 @@ package pages;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 
-public class InputsPage {
-
-    WebDriver driver;
+public class InputsPage extends BasePage{
 
     public InputsPage(WebDriver driver) {
-        this.driver = driver;
+        super(driver);
     }
 
     //Locators
-    By inputsField = By.cssSelector("#content > div > div > div > input[type=number]");
+    private final By inputsField = By.cssSelector("#content > div > div > div > input[type=number]");
 
-    public void setInputsData(String number) {
-        driver.findElement(inputsField).clear();
-        driver.findElement(inputsField).sendKeys(number);
+    public void enterInputData(String number){
+        clearAndType(inputsField, number);
     }
 
     public String getInputFieldValue() {
-        return driver.findElement(inputsField).getAttribute("value");
+        return getAttribute(inputsField, "value");
+    }
+
+    public void refreshPage(){
+        driver.navigate().refresh();
     }
 }

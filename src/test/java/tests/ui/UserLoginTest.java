@@ -1,11 +1,10 @@
 package tests.ui;
 
 import core.BaseTest;
-import data.UserLoginData;
+import tests.data.UserLoginData;
 
 import org.testng.Assert;
 import org.testng.annotations.Test;
-import utils.WaitUtils;
 
 public class UserLoginTest extends BaseTest {
 
@@ -38,7 +37,7 @@ public class UserLoginTest extends BaseTest {
 
         login(name, pass);
 
-        String actualResult = getLoginPage().getFlashText();
+        String actualResult = getLoginPage().getFlashMessage();
         Assert.assertTrue(actualResult.contains(ERROR_USERPASSWORD_MESSAGE), "Expected user password error message not found");
     }
 
@@ -47,9 +46,10 @@ public class UserLoginTest extends BaseTest {
 
         login(name, pass);
         getSecureAreaPage().clickLogoutButton();
-        WaitUtils.waitForUrlContains(driver, "/login");
+        getLoginPage().isUsernameFieldVisible();
+        getLoginPage().isPageOpened();
 
-        String actualResult = getLoginPage().getFlashText();
+        String actualResult = getLoginPage().getFlashMessage();
         Assert.assertTrue(actualResult.contains(SUCCESS_LOGOUT_MESSAGE), "Expected success logout message not found");
     }
 
@@ -57,7 +57,7 @@ public class UserLoginTest extends BaseTest {
     public void shouldShowErrorWithInvalidUserName(String name, String pass) {
 
         login(name, pass);
-        String actualResult = getLoginPage().getFlashText();
+        String actualResult = getLoginPage().getFlashMessage();
         Assert.assertTrue(actualResult.contains(ERROR_USERNAME_MESSAGE), "Expected username error message not found");
     }
 
@@ -75,7 +75,7 @@ public class UserLoginTest extends BaseTest {
 
         driver.get(DIRECT_SECUREAREA_LINK);
 
-        String actualResult = getLoginPage().getFlashText();
+        String actualResult = getLoginPage().getFlashMessage();
 
         Assert.assertTrue(getLoginPage().isPageOpened(), "Login page not opened when accessing secure URL directly");
         Assert.assertTrue(actualResult.contains(DIRECT_SECUREAREA_ERROR_MESSAGE), "Expected secure area error message not found");
