@@ -1,9 +1,10 @@
 package pages;
 
+import core.BasePage;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 
-public class MainPage extends BasePage{
+public class MainPage extends BasePage {
 
     public MainPage(WebDriver driver) {
         super(driver);
@@ -15,6 +16,7 @@ public class MainPage extends BasePage{
     private final By inputsPage = By.cssSelector("a[href='/inputs']");
     private final By dropDownPage = By.cssSelector("a[href='/dropdown']");
     private final By addRemoveElements = By.cssSelector("a[href='/add_remove_elements/']");
+    private final By javaScriptAlerts = By.cssSelector("a[href='/javascript_alerts']");
 
     public void openFormAuthentication() {
         click(formAuthentication);
@@ -34,6 +36,9 @@ public class MainPage extends BasePage{
 
     public void openAddRemoveElementsPage() {
         click(addRemoveElements);
+    }
+
+    public void openJavaScriptAlertsPage(){ click(javaScriptAlerts);
     }
 }
 

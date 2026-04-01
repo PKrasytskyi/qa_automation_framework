@@ -4,6 +4,7 @@ import core.BaseTest;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebDriverException;
 import org.testng.IInvokedMethod;
 import org.testng.IInvokedMethodListener;
 import org.testng.ITestContext;
@@ -51,17 +52,21 @@ public class AllureListener implements ITestListener, IInvokedMethodListener {
         WebDriver driver = resolveDriver(result);
 
         if (driver != null) {
-            byte[] screenshot = ((TakesScreenshot) driver).getScreenshotAs(OutputType.BYTES);
-            boolean attached = AllureAttachmentSupport.addByteAttachment(
-                    result,
-                    "Screenshot on Failure",
-                    "image/png",
-                    ".png",
-                    screenshot
-            );
+            try {
+                byte[] screenshot = ((TakesScreenshot) driver).getScreenshotAs(OutputType.BYTES);
+                boolean attached = AllureAttachmentSupport.addByteAttachment(
+                        result,
+                        "Screenshot on Failure",
+                        "image/png",
+                        ".png",
+                        screenshot
+                );
 
-            if (attached) {
-                result.setAttribute(SCREENSHOT_ATTACHED_ATTRIBUTE, true);
+                if (attached) {
+                    result.setAttribute(SCREENSHOT_ATTACHED_ATTRIBUTE, true);
+                }
+            } catch (WebDriverException e) {
+                // Driver session can already be closed by teardown; skip attachment in that case.
             }
         }
     }
@@ -83,12 +88,17 @@ public class AllureListener implements ITestListener, IInvokedMethodListener {
     }
 
     private WebDriver resolveDriver(ITestResult result) {
-        Object instance = result.getInstance();
+        WebDriver driver = getDriver();
 
-        if (instance instanceof BaseTest baseTest && baseTest.getDriver() != null) {
+        if (driver != null) {
+            return driver;
+        }
+
+        Object instance = result.getInstance();
+        if (instance instanceof BaseTest baseTest) {
             return baseTest.getDriver();
         }
 
-        return getDriver();
+        return null;
     }
 }

@@ -1,4 +1,4 @@
-package pages;
+package core;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
@@ -71,6 +71,22 @@ public abstract class BasePage {
 
     protected String getText(By locator){
        return findElement(locator).getText();
+    }
+
+    protected void acceptAlert(){
+        WaitUtils.waitForAlert(driver).accept();
+    }
+
+    protected void dismissAlert(){
+        WaitUtils.waitForAlert(driver).dismiss();
+    }
+
+    protected String getAlertText(){
+       return WaitUtils.waitForAlert(driver).getText();
+    }
+
+    protected void enterAlertText(String text){
+        WaitUtils.waitForAlert(driver).sendKeys(text);
     }
 }
 

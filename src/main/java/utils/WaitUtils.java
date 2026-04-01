@@ -1,6 +1,7 @@
 package utils;
 
 import config.ConfigReader;
+import org.openqa.selenium.Alert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -29,4 +30,9 @@ public final class WaitUtils {
     private static WebDriverWait buildWait(WebDriver driver) {
         return new WebDriverWait(driver, Duration.ofSeconds(ConfigReader.getTimeout()));
     }
+
+    public static Alert waitForAlert(WebDriver driver) {
+        return buildWait(driver).until(ExpectedConditions.alertIsPresent());
+    }
+
 }

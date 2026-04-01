@@ -4,6 +4,7 @@ import config.ConfigReader;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.io.FileHandler;
 
 import java.io.File;
@@ -30,6 +31,8 @@ public class ScreenshotUtils {
             throw new RuntimeException("Failed to persist screenshot to " + screenshotPath, e);
         } catch (ClassCastException e) {
             throw new RuntimeException("Current driver does not support screenshots", e);
+        } catch (WebDriverException e) {
+            return null;
         }
         return screenshotPath.toString();
     }

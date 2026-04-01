@@ -9,10 +9,11 @@ public class DropDownTests extends BaseTest {
 
     @Test(dataProvider = "dropdownOptions", dataProviderClass = DropDownData.class, groups = {"ui"})
     public void shouldSelectOptionFromDropDown(String option) {
-        getMainPage().openDropDownPage();
-        getDropDownPage().selectOption(option);
+        pages.getMainPage().openDropDownPage();
+        pages.getDropDownPage().selectOption(option);
         Assert.assertTrue(
-                getDropDownPage().isOptionSelected(option), "Expected option " + option + ",but selected" + getDropDownPage().getSelectedOption()
+                pages.getDropDownPage().isOptionSelected(option), "Expected option " + option + "," +
+                        "but selected" + pages.getDropDownPage().getSelectedOption()
         );
     }
 }

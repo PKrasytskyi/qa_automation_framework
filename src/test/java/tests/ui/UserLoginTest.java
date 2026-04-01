@@ -16,58 +16,57 @@ public class UserLoginTest extends BaseTest {
     private static final String DIRECT_SECUREAREA_ERROR_MESSAGE = "You must login to view the secure area!";
 
     private void login(String name, String pass) {
-        getMainPage().openFormAuthentication();
-        getLoginPage().login(name, pass);
+        pages.getMainPage().openFormAuthentication();
+        pages.getLoginPage().login(name, pass);
     }
 
 
-    @Test(dataProvider = "validUserData", dataProviderClass = UserLoginData.class, groups = {"ui", "smoke"})
+    @Test(dataProvider = "validUser", dataProviderClass = UserLoginData.class, groups = {"ui", "smoke"})
     public void shouldLoginWithValidCredentials(String name, String pass) {
 
         login(name, pass);
 
-        String actualResult = getSecureAreaPage().getFlashText();
-        Assert.assertTrue(getSecureAreaPage().isPageOpened());
+        String actualResult = pages.getSecureAreaPage().getFlashText();
+        Assert.assertTrue(pages.getSecureAreaPage().isPageOpened());
         Assert.assertTrue(actualResult.contains(SUCCESS_LOGIN_MESSAGE), "Expected success message not found");
 
     }
 
-    @Test(dataProvider = "invalidUserData", dataProviderClass = UserLoginData.class, groups = {"ui", "smoke"})
+    @Test(dataProvider = "invalidUser", dataProviderClass = UserLoginData.class, groups = {"ui", "smoke"})
     public void shouldShowErrorWithInvalidPassword(String name, String pass) {
 
         login(name, pass);
 
-        String actualResult = getLoginPage().getFlashMessage();
+        String actualResult = pages.getLoginPage().getFlashMessage();
         Assert.assertTrue(actualResult.contains(ERROR_USERPASSWORD_MESSAGE), "Expected user password error message not found");
     }
 
-    @Test(dataProvider = "validUserData", dataProviderClass = UserLoginData.class, groups = {"ui", "smoke"})
+    @Test(dataProvider = "validUser", dataProviderClass = UserLoginData.class, groups = {"ui", "smoke"})
     public void shouldLogoutSuccessfully(String name, String pass) {
 
         login(name, pass);
-        getSecureAreaPage().clickLogoutButton();
-        getLoginPage().isUsernameFieldVisible();
-        getLoginPage().isPageOpened();
+        pages.getSecureAreaPage().clickLogoutButton();
+        pages.getLoginPage().isPageOpened();
 
-        String actualResult = getLoginPage().getFlashMessage();
+        String actualResult = pages.getLoginPage().getFlashMessage();
         Assert.assertTrue(actualResult.contains(SUCCESS_LOGOUT_MESSAGE), "Expected success logout message not found");
     }
 
-    @Test(dataProvider = "invalidUsernameData", dataProviderClass = UserLoginData.class, groups = {"ui", "smoke"})
+    @Test(dataProvider = "invalidUsername", dataProviderClass = UserLoginData.class, groups = {"ui", "smoke"})
     public void shouldShowErrorWithInvalidUserName(String name, String pass) {
 
         login(name, pass);
-        String actualResult = getLoginPage().getFlashMessage();
+        String actualResult = pages.getLoginPage().getFlashMessage();
         Assert.assertTrue(actualResult.contains(ERROR_USERNAME_MESSAGE), "Expected username error message not found");
     }
 
-    @Test(dataProvider = "validUserData", dataProviderClass = UserLoginData.class, groups = {"ui", "smoke"})
+    @Test(dataProvider = "validUser", dataProviderClass = UserLoginData.class, groups = {"ui", "smoke"})
     public void shouldKeepSessionAfterRefresh(String name, String pass) {
 
         login(name, pass);
         driver.navigate().refresh();
-        Assert.assertTrue(getSecureAreaPage().isLogoutButtonVisible(), "User is not logged");
-        Assert.assertTrue(secureAreaPage.isPageOpened(), "Secure page is not opened after refresh");
+        Assert.assertTrue(pages.getSecureAreaPage().isLogoutButtonVisible(), "User is not logged");
+        Assert.assertTrue(pages.getSecureAreaPage().isPageOpened(), "Secure page is not opened after refresh");
     }
 
     @Test(groups = {"ui", "smoke"})
@@ -75,9 +74,9 @@ public class UserLoginTest extends BaseTest {
 
         driver.get(DIRECT_SECUREAREA_LINK);
 
-        String actualResult = getLoginPage().getFlashMessage();
+        String actualResult = pages.getLoginPage().getFlashMessage();
 
-        Assert.assertTrue(getLoginPage().isPageOpened(), "Login page not opened when accessing secure URL directly");
+        Assert.assertTrue(pages.getLoginPage().isPageOpened(), "Login page not opened when accessing secure URL directly");
         Assert.assertTrue(actualResult.contains(DIRECT_SECUREAREA_ERROR_MESSAGE), "Expected secure area error message not found");
     }
 }

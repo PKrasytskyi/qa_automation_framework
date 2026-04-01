@@ -46,12 +46,17 @@ public class TestListener implements ITestListener, IInvokedMethodListener {
     }
 
     private WebDriver resolveDriver(ITestResult result) {
-        Object instance = result.getInstance();
+        WebDriver driver = DriverFactory.getDriver();
 
-        if (instance instanceof BaseTest baseTest && baseTest.getDriver() != null) {
+        if (driver != null) {
+            return driver;
+        }
+
+        Object instance = result.getInstance();
+        if (instance instanceof BaseTest baseTest) {
             return baseTest.getDriver();
         }
 
-        return DriverFactory.getDriver();
+        return null;
     }
 }

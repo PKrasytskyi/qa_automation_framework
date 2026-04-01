@@ -13,6 +13,7 @@
             <class name="tests.ui.DropDownTests"/>
             <class name="tests.ui.InputsTest"/>
             <class name="tests.ui.UserLoginTest"/>
+            <class name="tests.ui.JsAlertsTest"></class>
         </classes>
     </test>
 </suite>
