@@ -1,6 +1,7 @@
 package core;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import utils.WaitUtils;
@@ -38,6 +39,12 @@ public abstract class BasePage {
     protected void click(By locator) {
         waitForClickable(locator).click();
     }
+
+    protected void jsClick(By locator) {
+        WebElement element = findElement(locator);
+        ((JavascriptExecutor) driver).executeScript("arguments[0].click();", element);
+    }
+
 
     protected String getTitle() {
         return driver.getTitle();
@@ -87,6 +94,26 @@ public abstract class BasePage {
 
     protected void enterAlertText(String text){
         WaitUtils.waitForAlert(driver).sendKeys(text);
+    }
+
+    protected void switchToIFrameByLocator(WebElement element){
+        driver.switchTo().frame(element);
+    }
+
+    protected void switchToIFrameByNameOrId(String nameOrId){
+        driver.switchTo().frame(nameOrId);
+    }
+
+    protected void switchToIFrameByIndex(int index){
+        driver.switchTo().frame(index);
+    }
+
+    protected void switchToParentIFrame(){
+        driver.switchTo().parentFrame();
+    }
+
+    public void switchToDefaultContent(){
+        driver.switchTo().defaultContent();
     }
 }
 

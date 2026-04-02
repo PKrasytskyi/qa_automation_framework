@@ -46,9 +46,12 @@ public class UserLoginTest extends BaseTest {
 
         login(name, pass);
         pages.getSecureAreaPage().clickLogoutButton();
+        pages.getLoginPage().isUsernameFieldVisible();
         pages.getLoginPage().isPageOpened();
 
         String actualResult = pages.getLoginPage().getFlashMessage();
+        Assert.assertTrue(pages.getLoginPage().isPageOpened(), "Login page was not opened");
+        Assert.assertTrue(pages.getLoginPage().isUsernameFieldVisible(), "Username field is not visible");
         Assert.assertTrue(actualResult.contains(SUCCESS_LOGOUT_MESSAGE), "Expected success logout message not found");
     }
 

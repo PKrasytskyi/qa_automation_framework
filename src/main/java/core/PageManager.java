@@ -15,6 +15,7 @@ public class PageManager {
     private DropDownPage dropDownPage;
     private AddRemoveElementsPage addRemoveElementsPage;
     private JavaScriptAlertsPage javaScriptAlerts;
+    private FramesPage framesPage;
 
     public PageManager(WebDriver driver) {
         this.driver = driver;
@@ -74,5 +75,12 @@ public class PageManager {
             javaScriptAlerts = new JavaScriptAlertsPage(driver);
         }
         return javaScriptAlerts;
+    }
+
+    public FramesPage getFramesPage() {
+        if(framesPage == null){
+            framesPage = new FramesPage(driver);
+        }
+        return framesPage;
     }
 }

@@ -17,6 +17,7 @@ public class MainPage extends BasePage {
     private final By dropDownPage = By.cssSelector("a[href='/dropdown']");
     private final By addRemoveElements = By.cssSelector("a[href='/add_remove_elements/']");
     private final By javaScriptAlerts = By.cssSelector("a[href='/javascript_alerts']");
+    private final By frames = By.cssSelector("a[href='/frames']");
 
     public void openFormAuthentication() {
         click(formAuthentication);
@@ -38,7 +39,9 @@ public class MainPage extends BasePage {
         click(addRemoveElements);
     }
 
-    public void openJavaScriptAlertsPage(){ click(javaScriptAlerts);
-    }
+    public void openJavaScriptAlertsPage(){ click(javaScriptAlerts);}
+
+    public void openFramesPage(){ click(frames);}
+
 }
 

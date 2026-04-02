@@ -14,6 +14,7 @@
             <class name="tests.ui.InputsTest"/>
             <class name="tests.ui.UserLoginTest"/>
             <class name="tests.ui.JsAlertsTest"></class>
+            <class name="tests.ui.IFramesTests"></class>
         </classes>
     </test>
 </suite>

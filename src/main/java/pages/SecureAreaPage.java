@@ -19,7 +19,7 @@ public class SecureAreaPage extends BasePage {
     }
 
     public void clickLogoutButton() {
-        click(logoutButton);
+        jsClick(logoutButton);
     }
 
     public boolean isPageOpened() {
