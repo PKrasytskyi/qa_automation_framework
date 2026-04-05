@@ -1,9 +1,6 @@
 package core;
 
-import org.openqa.selenium.By;
-import org.openqa.selenium.JavascriptExecutor;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
+import org.openqa.selenium.*;
 import utils.WaitUtils;
 
 import java.util.List;
@@ -112,8 +109,43 @@ public abstract class BasePage {
         driver.switchTo().parentFrame();
     }
 
-    public void switchToDefaultContent(){
+    protected void switchToDefaultContent(){
         driver.switchTo().defaultContent();
+    }
+
+    protected String getFrameTextByNameOrId(String nameOrId){
+       return getText((By) driver.switchTo().frame(nameOrId));
+    }
+
+    protected String getPageHandle(){
+       return driver.getWindowHandle();
+    }
+
+    protected void switchToNewWindow(){
+        driver.switchTo().newWindow(WindowType.WINDOW);
+    }
+
+    protected void switchToNewTab(){
+        driver.switchTo().newWindow(WindowType.TAB);
+    }
+
+    protected void switchToWindow(String handle) {
+        driver.switchTo().window(handle);
+    }
+
+
+    protected void switchToAnotherWindow(String currentHandle){
+
+        for(String handle : driver.getWindowHandles()){
+            if(!handle.equals(currentHandle)){
+                driver.switchTo().window(handle);
+                return;
+            }
+        }
+    }
+
+    protected void closeWindow(){
+        driver.close();
     }
 }
 

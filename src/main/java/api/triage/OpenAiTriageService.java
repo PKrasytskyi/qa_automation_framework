@@ -8,18 +8,25 @@ import java.util.Optional;
 public class OpenAiTriageService {
 
     private static final String TRIAGE_INSTRUCTIONS = """
-            
             You are a QA failure triage assistant for a Java Selenium TestNG framework.
-            
+
             Rules:
-            1. Use only the providence evidence.
+            1. Use only the provided evidence.
             2. Do not invent product behavior.
-            3. Do not change expected result.
-            4. If the evidence is week, mark needHumanReview=true.
+            3. Do not change the expected result.
+            4. If the evidence is weak, set needsHumanReview: true.
             5. Distinguish between locator_issue, assertion_failure, env_issue, flaky, data_issue, and unknown.
-            6. Respond in a structure way that can be mapped to:
-                    failureType, probableRootCause, confidence, rerunRecommended, needHumanReview, suggestedFix, summary.
-            
+            6. Return exactly seven lines.
+            7. Each line must follow this format: key: value
+            8. Do not return markdown, code fences, bullets, or extra commentary.
+            9. The keys must be exactly:
+               failureType
+               probableRootCause
+               confidence
+               rerunRecommended
+               needsHumanReview
+               suggestedFix
+               summary
             """;
 
     private final OpenAiAgentService agentService;
@@ -81,14 +88,14 @@ public class OpenAiTriageService {
                 
                 Browser console logs: %s
                 
-                Return:
-                    - failureType
-                    - probableRootCause
-                    - confidence
-                    - rerunRecommended
-                    - needsHumanReview
-                    - suggestedFix
-                    - summary
+                Return exactly these lines:
+                failureType: <value>
+                probableRootCause: <value>
+                confidence: <0-100>
+                rerunRecommended: <true|false>
+                needsHumanReview: <true|false>
+                suggestedFix: <value>
+                summary: <value>
                 """.formatted(
                 safe(context.testName()),
                 safe(context.className()),
@@ -108,12 +115,82 @@ public class OpenAiTriageService {
         );
     }
 
-    private TriageDecision parseDecision(String rawResponse) {
+    TriageDecision parseDecision(String rawResponse) {
+        if (rawResponse == null || rawResponse.isBlank()) {
+            return TriageDecision.humanReview("Model returned an empty triage response.");
+        }
 
-        return TriageDecision.humanReview(rawResponse);
+        String failureType = extractValue(rawResponse, "failureType");
+        String probableRootCause = extractValue(rawResponse, "probableRootCause");
+        int confidence = parseConfidence(extractValue(rawResponse, "confidence"));
+        boolean rerunRecommended = parseBoolean(extractValue(rawResponse, "rerunRecommended"));
+        boolean needsHumanReview = parseBoolean(extractValue(rawResponse, "needsHumanReview"));
+        String suggestedFix = extractValue(rawResponse, "suggestedFix");
+        String summary = extractValue(rawResponse, "summary");
+
+        boolean missingCoreFields = isBlank(failureType) && isBlank(probableRootCause) && isBlank(summary);
+        if (missingCoreFields) {
+            return TriageDecision.humanReview(rawResponse);
+        }
+
+        return new TriageDecision(
+                defaultIfBlank(failureType, "unknown"),
+                defaultIfBlank(probableRootCause, "The model did not provide a root cause."),
+                confidence,
+                rerunRecommended,
+                needsHumanReview,
+                suggestedFix,
+                defaultIfBlank(summary, rawResponse)
+        );
     }
 
     private String safe(String value) {
         return value == null ? "" : value;
+    }
+
+    private String extractValue(String rawResponse, String key) {
+        String prefix = key + ":";
+
+        for (String line : rawResponse.split("\\R")) {
+            String trimmed = line.trim();
+            if (trimmed.regionMatches(true, 0, prefix, 0, prefix.length())) {
+                return trimmed.substring(prefix.length()).trim();
+            }
+        }
+
+        return "";
+    }
+
+    private int parseConfidence(String rawValue) {
+        if (isBlank(rawValue)) {
+            return 0;
+        }
+
+        String digitsOnly = rawValue.replaceAll("[^0-9]", "");
+        if (digitsOnly.isBlank()) {
+            return 0;
+        }
+
+        try {
+            return Math.max(0, Math.min(100, Integer.parseInt(digitsOnly)));
+        } catch (NumberFormatException ignored) {
+            return 0;
+        }
+    }
+
+    private boolean parseBoolean(String rawValue) {
+        String normalized = safe(rawValue).trim().toLowerCase();
+        return normalized.equals("true")
+                || normalized.equals("yes")
+                || normalized.equals("y")
+                || normalized.equals("1");
+    }
+
+    private String defaultIfBlank(String value, String fallback) {
+        return isBlank(value) ? fallback : value;
+    }
+
+    private boolean isBlank(String value) {
+        return value == null || value.isBlank();
     }
 }

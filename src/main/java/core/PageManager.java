@@ -16,6 +16,8 @@ public class PageManager {
     private AddRemoveElementsPage addRemoveElementsPage;
     private JavaScriptAlertsPage javaScriptAlerts;
     private FramesPage framesPage;
+    private NestedFramesPage nestedFramesPage;
+    private MultipleWindowsPage multipleWindowsPage;
 
     public PageManager(WebDriver driver) {
         this.driver = driver;
@@ -82,5 +84,19 @@ public class PageManager {
             framesPage = new FramesPage(driver);
         }
         return framesPage;
+    }
+
+    public NestedFramesPage getNestedFramesPage(){
+        if(nestedFramesPage == null){
+            nestedFramesPage = new NestedFramesPage(driver);
+        }
+        return nestedFramesPage;
+    }
+
+    public MultipleWindowsPage getMultipleWindowsPage(){
+        if(multipleWindowsPage == null){
+            multipleWindowsPage = new MultipleWindowsPage(driver);
+        }
+        return multipleWindowsPage;
     }
 }

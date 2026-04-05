@@ -18,6 +18,8 @@ public class MainPage extends BasePage {
     private final By addRemoveElements = By.cssSelector("a[href='/add_remove_elements/']");
     private final By javaScriptAlerts = By.cssSelector("a[href='/javascript_alerts']");
     private final By frames = By.cssSelector("a[href='/frames']");
+    private final By nestedFrames = By.cssSelector("a[href='/nested_frames']");
+    private final By multipleWindows = By.cssSelector("a[href='/windows']");
 
     public void openFormAuthentication() {
         click(formAuthentication);
@@ -42,6 +44,10 @@ public class MainPage extends BasePage {
     public void openJavaScriptAlertsPage(){ click(javaScriptAlerts);}
 
     public void openFramesPage(){ click(frames);}
+
+    public void openNestedFramesPage(){ click(nestedFrames);}
+
+    public void openMultipleWindowsPage(){ click(multipleWindows);}
 
 }
 
