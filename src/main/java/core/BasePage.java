@@ -147,5 +147,7 @@ public abstract class BasePage {
     protected void closeWindow(){
         driver.close();
     }
+
+
 }
 
