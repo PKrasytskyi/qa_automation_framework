@@ -12,7 +12,7 @@ public class DynamicControlsPage extends BasePage {
 
     //Locators
     private final By removeButton = By.cssSelector("#checkbox-example > button");
-    private final By checkBoxInput = By.cssSelector("#checkbox > input[type=checkbox]");
+    private final By checkBoxInput = By.id("checkbox");
     private final By message = By.id("message");
     private final By addButton = By.cssSelector("#checkbox-example > button");
     private final By inputRow = By.cssSelector("#input-example > input[type=text]");
@@ -68,14 +68,6 @@ public class DynamicControlsPage extends BasePage {
 
     public void clickEnableButton(){
         click(toggleInputButton);
-    }
-
-    public boolean checkDisableButtonIsEnable(){
-        return waitForTextToBePresent(toggleInputButton, "Enable");
-    }
-
-    public boolean checkDisableButtonIsDisable(){
-        return waitForTextToBePresent(toggleInputButton, "Disable");
     }
 
     public void clickDisableButton(){
