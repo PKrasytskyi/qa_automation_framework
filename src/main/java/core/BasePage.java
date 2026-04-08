@@ -25,6 +25,22 @@ public abstract class BasePage {
        return WaitUtils.waitForUrlContains(driver, text);
     }
 
+    protected boolean waitForDisappearenceElement(By locator) {
+       return WaitUtils.waitForDisappearenceElement(driver, locator);}
+
+    protected boolean waitForAppearanceElement(By locator){
+        return WaitUtils.waitForAppearanceElement(driver, locator).isDisplayed();}
+
+    protected boolean waitForElementBecomeEnable(By locator){
+        return WaitUtils.waitForElementBecomeEnable(driver, locator);}
+
+    protected boolean waitForElementBecomeDisable(By locator){
+        return WaitUtils.waitForElementBecomeDisable(driver, locator);}
+
+    protected boolean waitForTextToBePresent(By locator, String text){
+        return WaitUtils.waitForTextToBePresent(driver, locator, text);
+    }
+
     protected WebElement findElement(By locator) {
         return waitForVisible(locator);
     }
@@ -147,5 +163,7 @@ public abstract class BasePage {
     protected void closeWindow(){
         driver.close();
     }
+
+
 }
 

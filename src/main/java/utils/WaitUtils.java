@@ -35,4 +35,24 @@ public final class WaitUtils {
         return buildWait(driver).until(ExpectedConditions.alertIsPresent());
     }
 
+    public static boolean waitForDisappearenceElement(WebDriver driver, By locator){
+        return buildWait(driver).until(ExpectedConditions.invisibilityOfElementLocated(locator));
+    }
+
+    public static WebElement waitForAppearanceElement(WebDriver driver, By locator){
+        return buildWait(driver).until(ExpectedConditions.visibilityOfElementLocated(locator));
+    }
+
+    public static boolean waitForElementBecomeEnable(WebDriver driver, By locator) {
+        return buildWait(driver).until(webDriver -> webDriver.findElement(locator).isEnabled());
+    }
+
+    public static boolean waitForElementBecomeDisable(WebDriver driver, By locator) {
+        return buildWait(driver).until(webDriver -> !webDriver.findElement(locator).isEnabled());
+    }
+
+    public static boolean waitForTextToBePresent(WebDriver driver, By locator, String text){
+        return buildWait(driver).until(ExpectedConditions.textToBePresentInElementLocated(locator, text));
+    }
+
 }
