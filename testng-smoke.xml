@@ -15,6 +15,7 @@
             <class name="tests.ui.UserLoginTest"/>
             <class name="tests.ui.JsAlertsTest"></class>
             <class name="tests.ui.NestedFramesTests"></class>
+            <class name="tests.ui.DynamicControlTests"></class>
         </classes>
     </test>
 </suite>
