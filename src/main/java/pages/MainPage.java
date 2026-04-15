@@ -21,6 +21,7 @@ public class MainPage extends BasePage {
     private final By nestedFrames = By.cssSelector("a[href='/nested_frames']");
     private final By multipleWindows = By.cssSelector("a[href='/windows']");
     private final By dynamicControls = By.cssSelector("a[href='/dynamic_controls']");
+    private final By dynamicLoading = By.cssSelector("a[href='/dynamic_loading']");
 
     public void openFormAuthentication() {
         click(formAuthentication);
@@ -51,5 +52,7 @@ public class MainPage extends BasePage {
     public void openMultipleWindowsPage(){ click(multipleWindows);}
 
     public void openDynamicControlsPage() {click(dynamicControls);}
+
+    public void openDynamicLoadingPage() {click(dynamicLoading);}
 }
 

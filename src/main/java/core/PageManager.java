@@ -19,6 +19,7 @@ public class PageManager {
     private NestedFramesPage nestedFramesPage;
     private MultipleWindowsPage multipleWindowsPage;
     private DynamicControlsPage dynamicControlsPage;
+    private DynamicLoadingPage dynamicLoadingPage;
 
     public PageManager(WebDriver driver) {
         this.driver = driver;
@@ -106,5 +107,12 @@ public class PageManager {
             dynamicControlsPage = new DynamicControlsPage(driver);
         }
         return dynamicControlsPage;
+    }
+
+    public DynamicLoadingPage getDynamicLoadingPage(){
+        if(dynamicLoadingPage == null){
+            dynamicLoadingPage = new DynamicLoadingPage(driver);
+        }
+        return dynamicLoadingPage;
     }
 }
