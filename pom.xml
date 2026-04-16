@@ -17,6 +17,7 @@
         <maven.compiler.plugin.version>3.13.0</maven.compiler.plugin.version>
         <maven.surefire.plugin.version>3.2.5</maven.surefire.plugin.version>
         <allure.maven.plugin.version>2.12.0</allure.maven.plugin.version>
+        <suiteXmlFile>testng-ui.xml</suiteXmlFile>
     </properties>
 
     <dependencyManagement>
@@ -89,7 +90,7 @@
                 <version>${maven.surefire.plugin.version}</version>
                 <configuration>
                     <suiteXmlFiles>
-                        <suiteXmlFile>testng-ui.xml</suiteXmlFile>
+                        <suiteXmlFile>${suiteXmlFile}</suiteXmlFile>
                     </suiteXmlFiles>
                     <systemPropertyVariables>
                         <allure.results.directory>${project.build.directory}/allure-results</allure.results.directory>
@@ -109,4 +110,19 @@
             </plugin>
         </plugins>
     </build>
+
+    <profiles>
+        <profile>
+            <id>ui</id>
+            <properties>
+                <suiteXmlFile>testng-ui.xml</suiteXmlFile>
+            </properties>
+        </profile>
+        <profile>
+            <id>smoke</id>
+            <properties>
+                <suiteXmlFile>testng-smoke.xml</suiteXmlFile>
+            </properties>
+        </profile>
+    </profiles>
 </project>

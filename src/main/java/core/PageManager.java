@@ -2,6 +2,9 @@ package core;
 
 import org.openqa.selenium.WebDriver;
 import pages.*;
+import pages.DynamicLoadingPages.DynamicLoadingPage;
+import pages.DynamicLoadingPages.DynamicLoadingPageExample1;
+import pages.DynamicLoadingPages.DynamicLoadingPageExample2;
 
 public class PageManager {
 
@@ -19,6 +22,9 @@ public class PageManager {
     private NestedFramesPage nestedFramesPage;
     private MultipleWindowsPage multipleWindowsPage;
     private DynamicControlsPage dynamicControlsPage;
+    private DynamicLoadingPage dynamicLoadingPage;
+    private DynamicLoadingPageExample1 dynamicLoadingPageExample1;
+    private DynamicLoadingPageExample2 dynamicLoadingPageExample2;
 
     public PageManager(WebDriver driver) {
         this.driver = driver;
@@ -106,5 +112,26 @@ public class PageManager {
             dynamicControlsPage = new DynamicControlsPage(driver);
         }
         return dynamicControlsPage;
+    }
+
+    public DynamicLoadingPage getDynamicLoadingPage(){
+        if(dynamicLoadingPage == null){
+            dynamicLoadingPage = new DynamicLoadingPage(driver);
+        }
+        return dynamicLoadingPage;
+    }
+
+    public DynamicLoadingPageExample1 getDynamicLoadingPageExample1(){
+        if(dynamicLoadingPageExample1 == null){
+            dynamicLoadingPageExample1 = new DynamicLoadingPageExample1(driver);
+        }
+        return dynamicLoadingPageExample1;
+    }
+
+    public DynamicLoadingPageExample2 getDynamicLoadingPageExample2(){
+        if(dynamicLoadingPageExample2 == null){
+            dynamicLoadingPageExample2 = new DynamicLoadingPageExample2(driver);
+        }
+        return dynamicLoadingPageExample2;
     }
 }
