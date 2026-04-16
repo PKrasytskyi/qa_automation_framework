@@ -2,14 +2,19 @@ package listeners;
 
 import api.triage.DecisionPolicy;
 import api.triage.FailureContext;
+import api.triage.FailureContextBuilder;
 import api.triage.OpenAiTriageService;
 import api.triage.PolicyDecision;
 import api.triage.TriageDecision;
 import config.ConfigReader;
+import core.BaseTest;
+import core.DriverFactory;
+import org.openqa.selenium.WebDriver;
 import org.testng.IInvokedMethod;
 import org.testng.IInvokedMethodListener;
 import org.testng.ITestListener;
 import org.testng.ITestResult;
+import utils.ScreenshotUtils;
 
 import java.util.Optional;
 
@@ -64,9 +69,9 @@ public class AgentTriageListener implements ITestListener, IInvokedMethodListene
             return;
         }
 
-        Object attribute = result.getAttribute(TestListener.FAILURE_CONTEXT_ATTRIBUTE);
-        if (!(attribute instanceof FailureContext failureContext)) {
-            if (attachText(result, "AI Triage", "FailureContext was not found in TestNG result attributes.")) {
+        FailureContext failureContext = resolveFailureContext(result);
+        if (failureContext == null) {
+            if (attachText(result, "AI Triage Error", "FailureContext could not be created for this failed test.")) {
                 result.setAttribute(TRIAGE_ATTACHED_ATTRIBUTE, true);
             }
             return;
@@ -96,6 +101,35 @@ public class AgentTriageListener implements ITestListener, IInvokedMethodListene
 
     private boolean attachText(ITestResult result, String name, String content) {
         return AllureAttachmentSupport.addTextAttachment(result, name, safe(content));
+    }
+
+    private FailureContext resolveFailureContext(ITestResult result) {
+        Object attribute = result.getAttribute(TestListener.FAILURE_CONTEXT_ATTRIBUTE);
+        if (attribute instanceof FailureContext failureContext) {
+            return failureContext;
+        }
+
+        WebDriver driver = resolveDriver(result);
+        String screenshotPath = ScreenshotUtils.takeScreenshot(driver, result.getName());
+        FailureContext failureContext = new FailureContextBuilder(driver)
+                .build(result, driver, screenshotPath);
+
+        result.setAttribute(TestListener.FAILURE_CONTEXT_ATTRIBUTE, failureContext);
+        return failureContext;
+    }
+
+    private WebDriver resolveDriver(ITestResult result) {
+        WebDriver driver = DriverFactory.getDriver();
+        if (driver != null) {
+            return driver;
+        }
+
+        Object instance = result.getInstance();
+        if (instance instanceof BaseTest baseTest) {
+            return baseTest.getDriver();
+        }
+
+        return null;
     }
 
     private String formatFailureContext(FailureContext context) {

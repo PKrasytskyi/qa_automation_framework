@@ -18,6 +18,7 @@
             <class name="tests.ui.NestedFramesTests"></class>
             <class name="tests.ui.MultipleWindowsTests"></class>
             <class name="tests.ui.DynamicControlTests"></class>
+            <class name="tests.ui.DynamicLoadingTests"></class>
         </classes>
     </test>
 </suite>
