@@ -7,8 +7,9 @@
                 <include name="api"/>
             </run>
         </groups>
-        <packages>
-            <package name="tests.api"/>
-        </packages>
+        <classes>
+            <class name="tests.api.PostCreateTest"></class>
+            <class name="tests.api.PostGetTest"></class>
+        </classes>
     </test>
 </suite>
