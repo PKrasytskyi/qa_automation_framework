@@ -11,18 +11,10 @@ public class ApiManager {
     private RequestSpecification baseRequestSpec;
 
     public RequestSpecification getBaseRequestSpec(){
-        if(baseRequestSpec != null){
+        if(baseRequestSpec == null){
             baseRequestSpec = buildBaseRequestSpec();
         }
         return baseRequestSpec;
-    }
-
-    public RequestSpecification buildBaseRequestSpec(){
-        return new RequestSpecBuilder()
-                .setBaseUri(ConfigReader.getApiBaseUrl())
-                .setContentType(ContentType.JSON)
-                .addHeader("Accept", ContentType.JSON.toString())
-                .build();
     }
 
     public RequestSpecification newRequest(){
@@ -30,8 +22,16 @@ public class ApiManager {
                 .spec(getBaseRequestSpec());
     }
 
-    public void rest(){
+    public void reset(){
         RestAssured.reset();
         baseRequestSpec = null;
+    }
+
+    private RequestSpecification buildBaseRequestSpec(){
+        return new RequestSpecBuilder()
+                .setBaseUri(ConfigReader.getApiBaseUrl())
+                .setContentType(ContentType.JSON)
+                .addHeader("Accept", ContentType.JSON.toString())
+                .build();
     }
 }
