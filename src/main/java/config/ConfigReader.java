@@ -7,6 +7,7 @@ public class ConfigReader {
 
     private static final Properties properties = new Properties();
     private static final String DEFAULT_BASE_URL = "https://the-internet.herokuapp.com/";
+    private static final String DEFAULT_API_BASE_URL = "https://jsonplaceholder.typicode.com";
     private static final String DEFAULT_BROWSER = "chrome";
     private static final int DEFAULT_EXPLICIT_WAIT = 10;
     private static final int DEFAULT_PAGE_LOAD_TIMEOUT = 30;
@@ -36,6 +37,10 @@ public class ConfigReader {
 
     public static String getBaseUrl() {
         return getString(new String[]{"baseUrl", "base.url"}, "BASE_URL", DEFAULT_BASE_URL);
+    }
+
+    public static String getApiBaseUrl() {
+        return getString(new String[]{"api.baseUrl", "api.base.url"}, "API_BASE_URL", DEFAULT_API_BASE_URL);
     }
 
     public static int getTimeout() {
