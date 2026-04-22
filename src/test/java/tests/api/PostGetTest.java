@@ -26,4 +26,13 @@ public class PostGetTest extends ApiBaseTest {
         Assert.assertEquals(response.statusCode(), 200, "Status code should be 200");
         Assert.assertEquals(response.jsonPath().getInt("id"), expectedPostId, "Post id should match");
     }
+
+    @Test(groups = {"api"})
+    public void shouldReturnPostCollections(){
+
+        Response response = postClient.getAllPosts();
+
+        Assert.assertEquals(response.statusCode(), 200, "Status code should be 200");
+        Assert.assertFalse(response.jsonPath().getList("$").isEmpty(), "Post collection should not be empty");
+    }
 }
