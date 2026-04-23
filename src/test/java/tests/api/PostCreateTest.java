@@ -3,6 +3,7 @@ package tests.api;
 import api.clients.PostClient;
 import api.models.request.CreatePostRequest;
 import api.models.response.PostResponse;
+import assertions.PostAssertions;
 import core.ApiBaseTest;
 import io.restassured.response.Response;
 import org.testng.Assert;
@@ -30,9 +31,7 @@ public class PostCreateTest extends ApiBaseTest {
         PostResponse postResponse = response.as(PostResponse.class);
 
         Assert.assertEquals(response.getStatusCode(), 201, "Status code should be 201");
-        Assert.assertEquals(postResponse.getTitle(), request.getTitle(), "Post title should match request");
-        Assert.assertEquals(postResponse.getBody(), request.getBody(), "Post body should match request");
-        Assert.assertTrue(postResponse.getUserId() > 19);
+        PostAssertions.assertCreatedPostMatchesRequest(postResponse, request);
     }
 
     @Test(groups = {"api"})
@@ -47,9 +46,7 @@ public class PostCreateTest extends ApiBaseTest {
         PostResponse postResponse = response.as(PostResponse.class);
 
         Assert.assertEquals(response.getStatusCode(), 201, "Status code should be 201");
-        Assert.assertEquals(postResponse.getUserId(), request.getUserId(), "User id should match request");
-        Assert.assertEquals(postResponse.getTitle(), request.getTitle(), "Post title should match request");
-        Assert.assertEquals(postResponse.getBody(), request.getBody(), "Post body should match request");
+        PostAssertions.assertCreatedPostMatchesRequest(postResponse, request);
     }
 
     @Test(groups = {"api"})
