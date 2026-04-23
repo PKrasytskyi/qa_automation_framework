@@ -62,10 +62,8 @@ public class PostGetTest extends ApiBaseTest {
         int postId = 9999999;
 
         Response response = postClient.getPostById(postId);
-        PostResponse postResponse = response.as(PostResponse.class);
 
         Assert.assertEquals(response.getStatusCode(), 404, "Status code should be 404");
-        Assert.assertNull(postResponse.getBody(), "Post body should be null");
-
+        Assert.assertTrue(response.jsonPath().getMap("$").isEmpty(), "404 body should be an empty JSON object");
     }
 }
