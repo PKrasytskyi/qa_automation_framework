@@ -3,11 +3,9 @@ package tests.api;
 import api.clients.PostClient;
 import api.models.response.PostResponse;
 import api.specs.ApiResponseSpec;
-import assertions.ApiAssertions;
 import assertions.PostAssertions;
 import io.restassured.response.Response;
 import core.ApiBaseTest;
-import io.restassured.specification.ResponseSpecification;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
@@ -44,10 +42,10 @@ public class PostGetTest extends ApiBaseTest {
         Response response = postClient.getPostById(expectedPostId);
         PostResponse postResponse = response.as(PostResponse.class);
 
-        Assert.assertEquals(response.getStatusCode(), 200, "Status code should be 200");
-        Assert.assertTrue(postResponse.getUserId() > 0, "User id should be greater than 0");
-        Assert.assertEquals(postResponse.getId(), expectedPostId, "Post id should match");
-        Assert.assertFalse(postResponse.getBody().isBlank(),  "Post body should not be empty");
+        response.then().spec(ApiResponseSpec.statusCode200Js());
+
+        PostAssertions.assertPostHasExpectedId(postResponse, expectedPostId);
+        PostAssertions.assertPostHasValidRequiredFields(postResponse);
     }
 
     @Test(groups = {"api"})
@@ -56,7 +54,7 @@ public class PostGetTest extends ApiBaseTest {
         Response response = postClient.getAllPosts();
         List<PostResponse> posts = response.jsonPath().getList(".", PostResponse.class);
 
-        ApiAssertions.assertStatusCode(response, 200);
+        response.then().spec(ApiResponseSpec.statusCode200Js());
         Assert.assertFalse(posts.isEmpty(), "Post collection should not be empty");
         Assert.assertTrue(posts.stream().findFirst().get().getId() > 0, "Post id should be greater than 0");
     }
@@ -67,7 +65,8 @@ public class PostGetTest extends ApiBaseTest {
 
         Response response = postClient.getPostById(postId);
 
-        ApiAssertions.assertStatusCode(response, 404);
+        response.then().spec(ApiResponseSpec.statusCode404Js());
+
         Assert.assertTrue(response.jsonPath().getMap("$").isEmpty(), "404 body should be an empty JSON object");
     }
 }

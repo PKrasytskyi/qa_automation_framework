@@ -3,11 +3,10 @@ package tests.api;
 import api.clients.PostClient;
 import api.models.request.CreatePostRequest;
 import api.models.response.PostResponse;
-import assertions.ApiAssertions;
+import api.specs.ApiResponseSpec;
 import assertions.PostAssertions;
 import core.ApiBaseTest;
 import io.restassured.response.Response;
-import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 import tests.apiData.PostApiData;
@@ -27,7 +26,8 @@ public class PostCreateTestWithDataProviderTest extends ApiBaseTest {
         Response response = postClient.createPost(request);
         PostResponse postResponse = response.as(PostResponse.class);
 
-        Assert.assertEquals(response.getStatusCode(), 201, "Status code should be 201");
+        response.then().spec(ApiResponseSpec.statusCode201Js());
+
         PostAssertions.assertCreatedPostMatchesRequest(postResponse, request);
     }
 
@@ -35,7 +35,7 @@ public class PostCreateTestWithDataProviderTest extends ApiBaseTest {
     public void shouldCreatePostSuccessfullyWithNewDataProvider(CreatePostRequest request){
         Response response = postClient.createPost(request);
 
-        ApiAssertions.assertStatusCode(response, 201);
+        response.then().spec(ApiResponseSpec.statusCode201Js());
 
         PostResponse postResponse = response.as(PostResponse.class);
         PostAssertions.assertCreatedPostMatchesRequest(postResponse, request);
