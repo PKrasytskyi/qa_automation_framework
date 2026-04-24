@@ -1,5 +1,7 @@
 package core;
 
+import api.filters.ApiAllureFilter;
+import api.filters.ApiCaptureFilter;
 import config.ConfigReader;
 import io.restassured.RestAssured;
 import io.restassured.builder.RequestSpecBuilder;
@@ -32,6 +34,7 @@ public class ApiManager {
                 .setBaseUri(ConfigReader.getApiBaseUrl())
                 .setContentType(ContentType.JSON)
                 .addHeader("Accept", ContentType.JSON.toString())
+                .addFilter(new ApiCaptureFilter())
                 .build();
     }
 }
