@@ -8,6 +8,7 @@ public class ConfigReader {
     private static final Properties properties = new Properties();
     private static final String DEFAULT_BASE_URL = "https://the-internet.herokuapp.com/";
     private static final String DEFAULT_API_BASE_URL = "https://jsonplaceholder.typicode.com";
+    private static final String DEFAULT_TOKEN_API_BASE_URL = "https://gorest.co.in/";
     private static final String DEFAULT_BROWSER = "chrome";
     private static final int DEFAULT_EXPLICIT_WAIT = 10;
     private static final int DEFAULT_PAGE_LOAD_TIMEOUT = 30;
@@ -15,6 +16,8 @@ public class ConfigReader {
     private static final String DEFAULT_OPENAI_MODEL = "gpt-4.1";
     private static final int DEFAULT_MAX_TRACE_CHARS = 8_000;
     private static final int DEFAULT_MAX_PAGE_SOURCE_CHARS = 12_000;
+    private static final String DEFAULT_API_TOKEN = "";
+    private static final String DEFAULT_API_KEY = "";
 
     static {
         try {
@@ -41,6 +44,10 @@ public class ConfigReader {
 
     public static String getApiBaseUrl() {
         return getString(new String[]{"api.baseUrl", "api.base.url"}, "API_BASE_URL", DEFAULT_API_BASE_URL);
+    }
+
+    public static String getTokenApiBaseUrl(){
+        return getString(new String[]{"api.tokenBaseUrl"}, "API_TOKEN_BASE_URL", DEFAULT_TOKEN_API_BASE_URL);
     }
 
     public static int getTimeout() {
@@ -90,6 +97,10 @@ public class ConfigReader {
     public static String getAgentMode() {
         return getString("agent.mode", "AGENT_MODE", "off");
     }
+
+    public static String getApiToken(){ return getString("api.token", "API_TOKEN", DEFAULT_API_TOKEN); }
+
+    public static String getApiKey() { return getString("api.key", "API_KEY", DEFAULT_API_KEY); }
 
     private static String getString(String propertyKey, String envKey, String defaultValue) {
         return getString(new String[]{propertyKey}, envKey, defaultValue);
