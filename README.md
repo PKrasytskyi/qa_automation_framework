@@ -1,75 +1,161 @@
 # QA Automation Framework
 
-Java-based UI automation framework for web testing with Selenium WebDriver, TestNG, Allure reporting, and GitHub Actions CI. Includes configurable execution, failure screenshots, and experimental AI-assisted failure triage for debugging failed tests.
+Java-based automation framework that combines UI testing with Selenium WebDriver and API testing with RestAssured. The project uses TestNG for execution, Allure for reporting, and GitHub Actions for CI. It also includes optional OpenAI-powered failure triage for UI failures.
 
 ## Why This Project
 
-This project demonstrates how to build a maintainable UI automation framework rather than a collection of isolated tests. It focuses on reusable page objects, centralized configuration, suite-based execution, reporting, and CI readiness. As an extra exploration, it also includes experimental AI-assisted failure triage for failed UI runs.
+This repository is built as a learning-oriented automation framework rather than a collection of isolated tests. The main goal is to keep the structure readable, layered, and easy to extend while still following good engineering practices:
 
-## What is included
+- separate UI and API layers
+- centralized configuration
+- reusable base classes and managers
+- DTO-based API requests and responses
+- builder and DataProvider examples for test data
+- suite-based execution with TestNG
+- Allure reporting and CI support
 
-- Page Object Model for UI flows
-- TestNG-based suite execution
-- Allure reporting with screenshots on failure
-- Separate failure listeners for screenshots and AI triage attachments
-- Configurable browser, base URL, and timeouts
-- Optional OpenAI-powered QA agent and triage flow via API key
-- GitHub Actions workflow for CI execution
+## What Is Included
 
-## Project structure
+- UI automation with Selenium WebDriver and Page Object Model
+- API automation with RestAssured
+- public API examples on JSONPlaceholder
+- authorized API examples on GoRest
+- DTO-based request/response handling for API tests
+- reusable API assertions and response specifications
+- builder- and DataProvider-based API test data setup
+- failure screenshots for UI tests
+- failure-only API request/response attachments for Allure
+- experimental AI-assisted failure triage for UI failures
+- GitHub Actions workflow with separate UI and API jobs
+
+## Current Project Structure
 
 ```text
 src
 |-- main/java
 |   |-- api
+|   |   |-- clients
+|   |   |-- filters
+|   |   |-- logging
+|   |   |-- models
+|   |   |   |-- request
+|   |   |   `-- response
+|   |   |-- specs
 |   |   `-- triage
 |   |-- config
 |   |-- core
-|   |-- data
 |   |-- driver
 |   |-- listeners
 |   |-- pages
 |   `-- utils
-`-- test
-    |-- java/tests/ui
-    `-- resources
+`-- test/java
+    |-- assertions
+    `-- tests
+        |-- api
+        |   `-- goRestApiTests
+        |-- apiData
+        |-- builder
+        |-- data
+        |-- Helpers
+        `-- ui
 ```
 
-## Covered Flows
+## Architecture Overview
 
-- Login with valid credentials
-- Validation for invalid username and invalid password
-- Logout flow
-- Direct navigation protection for secured pages
-- Session persistence after browser refresh
-- Inputs field behavior
-- Checkboxes interactions
-- Dropdown selection
-- Add/Remove elements interactions
+- `core`
+  Shared framework setup such as `BaseTest`, `ApiBaseTest`, `DriverFactory`, `PageManager`, and `ApiManager`.
+- `pages`
+  UI Page Object classes and page-specific actions.
+- `api.clients`
+  Endpoint-level API operations such as `PostClient` and `GoRestUserClient`.
+- `api.models.request`
+  DTO classes for request payloads such as `CreatePostRequest` and `CreateGoRestUserRequest`.
+- `api.models.response`
+  DTO classes for response payloads such as `PostResponse` and `GoRestUserResponse`.
+- `api.specs`
+  Reusable RestAssured response specifications for common HTTP expectations.
+- `api.filters` and `api.logging`
+  API traffic capture and storage used for failure-only Allure attachments.
+- `assertions`
+  Reusable assertion helpers for API domain checks.
+- `tests.api`
+  API scenarios for posts and GoRest user flows.
+- `tests.apiData` and `tests.builder`
+  DataProviders and payload builders for API tests.
+- `listeners`
+  UI screenshots, Allure hooks, API failure attachments, and AI triage hooks.
 
-## Architecture
+## Covered UI Flows
 
-- `core` - driver lifecycle and base test setup
-- `pages` - Page Object Model classes
-- `data` - test data providers
-- `listeners` - screenshots, failure context, and AI triage hooks
-- `utils` - waits, screenshots, and helper utilities
-- `.github/workflows` - CI execution
+- login with valid credentials
+- validation for invalid username and invalid password
+- logout flow
+- direct navigation protection for secured pages
+- session persistence after browser refresh
+- inputs field behavior
+- checkboxes interactions
+- dropdown selection
+- add/remove elements interactions
+- JavaScript alerts
+- frames and nested frames
+- multiple windows
+- dynamic controls
+- dynamic loading
 
+## Covered API Flows
+
+### JSONPlaceholder
+
+- `GET /posts/{id}` happy-path validation
+- `GET /posts` collection validation
+- `GET /posts/{id}` negative `404` scenario
+- `POST /posts` happy-path creation
+- DTO-based request/response validation
+- DataProvider-based examples for GET and POST
+
+### GoRest
+
+- `GET /public/v2/users` users collection validation
+- `POST /public/v2/users` authorized happy-path creation
+- builder- and DataProvider-based user creation examples
+- negative auth scenario without token
+- duplicate email validation scenario
+- cleanup via authorized delete call after selected create tests
+
+## API Design Notes
+
+The API layer is intentionally built in steps:
+
+1. `ApiBaseTest` for API lifecycle
+2. `ApiManager` for centralized RestAssured configuration
+3. client classes for endpoint actions
+4. request/response DTO models
+5. reusable assertions
+6. response specifications
+7. builders and DataProviders for test data
+8. failure-only Allure attachments for API traffic
+9. authorized request flow for token-based APIs
+
+This keeps the code educational and easy to explain while still following good framework practices.
 
 ## Configuration
 
 Default configuration lives in [config.properties](C:\Users\demra\IdeaProjects\UI_API\src\test\resources\config.properties).
 
-Supported properties:
+Current properties:
 
 ```properties
 baseUrl=https://the-internet.herokuapp.com/
+api.baseUrl=https://jsonplaceholder.typicode.com
+api.tokenBaseUrl=https://gorest.co.in/
 browser=chrome
-headless=false
+headless=true
 explicit.wait=10
 page.load.timeout=30
 screenshotPath=reports/screenshots/
+maxStackTraceChars=8000
+maxPageSourceChars=12000
+environment=qa
 openai.model=gpt-4.1
 agent.enabled=false
 agent.mode=off
@@ -80,6 +166,10 @@ Environment variables override file values when present:
 
 ```text
 BASE_URL
+API_BASE_URL
+API_TOKEN_BASE_URL
+API_TOKEN
+API_KEY
 BROWSER
 HEADLESS
 EXPLICIT_WAIT
@@ -92,62 +182,106 @@ AGENT_MODE
 AGENT_TIMEOUT_SECONDS
 ```
 
-## Running tests
+## Running Tests
 
 Prerequisites:
 
 - Java 17+
 - Maven 3.9+
-- Chrome installed
+- Chrome installed for UI execution
+- GoRest personal access token for authorized GoRest tests
 
-Run the default UI suite:
+Run the default suite:
 
-```bash
+```powershell
 mvn clean test
 ```
 
-Run a specific TestNG suite file:
+Run the full UI suite:
 
 ```powershell
-mvn test "-Dsurefire.suiteXmlFiles=testng-ui.xml"
+mvn clean test -Pui
 ```
 
-Run the smoke suite:
+Run the smoke UI suite:
 
 ```powershell
-mvn test "-Dsurefire.suiteXmlFiles=testng-smoke.xml"
+mvn clean test -Psmoke
 ```
 
-Override settings from the command line:
+Run the API suite:
 
 ```powershell
-$env:BASE_URL="https://the-internet.herokuapp.com/"
-$env:HEADLESS="true"
-mvn clean test
+mvn clean test -Papi
 ```
 
-Generate and open Allure report:
+Run one API test class:
 
-```bash
+```powershell
+$env:API_TOKEN="your_gorest_token"
+mvn test -Papi "-Dtest=tests.api.goRestApiTests.UserCreateTests"
+```
+
+Run one API test method:
+
+```powershell
+$env:API_TOKEN="your_gorest_token"
+mvn test -Papi "-Dtest=tests.api.goRestApiTests.UserCreateTests#shouldCreateUserWithValidData"
+```
+
+Generate and open the Allure report:
+
+```powershell
 mvn allure:serve
 ```
 
-Run the OpenAI QA agent demo:
+## TestNG Suites
 
-```powershell
-$env:OPENAI_API_KEY="your_api_key"
-mvn -q "-Dexec.mainClass=api.OpenAiAgentDemo" exec:java
+Suite files live in the project root:
+
+- [testng-ui.xml](C:\Users\demra\IdeaProjects\UI_API\testng-ui.xml)
+- [testng-smoke.xml](C:\Users\demra\IdeaProjects\UI_API\testng-smoke.xml)
+- [testng-api.xml](C:\Users\demra\IdeaProjects\UI_API\testng-api.xml)
+
+Current intent:
+
+- `testng-ui.xml` runs the UI regression-style set
+- `testng-smoke.xml` runs the smaller smoke subset
+- `testng-api.xml` discovers API tests from the `tests.api` package and runs the `api` group
+
+## Allure Reporting
+
+- UI failures attach screenshots and page context
+- API failures attach captured request/response traffic only on failed tests
+- API auth headers are masked before traffic is stored for reporting
+
+Allure result files are written to `target/allure-results`.
+
+## CI
+
+GitHub Actions workflow is stored in [ci.yml](C:\Users\demra\IdeaProjects\UI_API\.github\workflows\ci.yml).
+
+The workflow currently runs separate jobs for UI and API execution. For authorized GoRest tests in CI, add the repository secret:
+
+- `API_TOKEN`
+
+Then expose it in the API job environment:
+
+```yaml
+env:
+  API_TOKEN: ${{ secrets.API_TOKEN }}
 ```
 
-Pass your own task:
+The pipeline uploads separate artifacts for:
 
-```powershell
-mvn -q "-Dexec.mainClass=api.OpenAiAgentDemo" "-Dexec.args=Create regression ideas for dropdown coverage" exec:java
-```
+- UI Surefire reports
+- UI Allure results
+- API Surefire reports
+- API Allure results
 
 ## Experimental AI-Assisted Failure Triage
 
-The project now includes [OpenAiAgentService.java](C:\Users\demra\IdeaProjects\UI_API\src\main\java\api\OpenAiAgentService.java), a small wrapper around the OpenAI Responses API for QA-oriented prompts.
+The project includes [OpenAiAgentService.java](C:\Users\demra\IdeaProjects\UI_API\src\main\java\api\OpenAiAgentService.java), a lightweight wrapper around the OpenAI Responses API for QA-oriented prompts.
 
 For failure triage, the project also includes:
 
@@ -161,25 +295,11 @@ Setup:
 - set `OPENAI_API_KEY` in your environment
 - optionally override `openai.model` in [config.properties](C:\Users\demra\IdeaProjects\UI_API\src\test\resources\config.properties)
 - enable triage with `agent.enabled=true`
-- set `agent.mode=triage` to attach failure context and AI triage notes to Allure on failed tests
-
-The service is intentionally small so you can extend it with your own prompts, tool-calling loop, bug triage flow, or test-case generation logic.
-
-## CI
-
-GitHub Actions workflow is stored in [ci.yml](C:\Users\demra\IdeaProjects\UI_API\.github\workflows\ci.yml).
-
-The workflow:
-
-- checks out the repository
-- installs Java 17
-- caches Maven dependencies
-- runs `mvn clean test`
-- uploads Surefire and Allure artifacts
+- set `agent.mode=triage` to attach failure context and AI triage notes to Allure on failed UI tests
 
 ## Notes
 
-- TestNG suite files live in the project root: [testng-ui.xml](C:\Users\demra\IdeaProjects\UI_API\testng-ui.xml) and [testng-smoke.xml](C:\Users\demra\IdeaProjects\UI_API\testng-smoke.xml).
-- Allure result files are written to `target/allure-results`.
-- Local screenshots are written to `reports/screenshots/`.
-- Allure screenshot and AI triage attachments are handled by separate listeners and share a small helper: [AllureAttachmentSupport.java](C:\Users\demra\IdeaProjects\UI_API\src\main\java\listeners\AllureAttachmentSupport.java).
+- UI listeners are tied to Selenium and should not be reused for API test classes.
+- API tests should inherit from [ApiBaseTest](C:\Users\demra\IdeaProjects\UI_API\src\main\java\core\ApiBaseTest.java), not from UI [BaseTest](C:\Users\demra\IdeaProjects\UI_API\src\main\java\core\BaseTest.java).
+- GoRest positive scenarios require `API_TOKEN` locally or in CI.
+- JSONPlaceholder examples remain useful as public, no-auth training scenarios.

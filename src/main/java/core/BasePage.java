@@ -110,11 +110,11 @@ public abstract class BasePage {
     }
 
     protected void switchToIFrameByLocator(WebElement element){
-        driver.switchTo().frame(element);
+        WaitUtils.waitForFrameAndSwitchToIt(driver, element);
     }
 
     protected void switchToIFrameByNameOrId(String nameOrId){
-        driver.switchTo().frame(nameOrId);
+        WaitUtils.waitForFrameAndSwitchToIt(driver, nameOrId);
     }
 
     protected void switchToIFrameByIndex(int index){

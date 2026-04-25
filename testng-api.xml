@@ -9,6 +9,7 @@
         </groups>
         <packages>
             <package name="tests.api"/>
+            <package name="tests.api.goRestApiTests"></package>
         </packages>
     </test>
 </suite>
