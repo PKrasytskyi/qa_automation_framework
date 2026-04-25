@@ -28,4 +28,11 @@ public class ApiResponseSpec {
                 .expectContentType(ContentType.JSON)
                 .build();
     }
+
+    public static ResponseSpecification statusCode401Js(){
+        return new ResponseSpecBuilder()
+                .expectStatusCode(401)
+                .expectContentType(ContentType.JSON)
+                .build();
+    }
 }

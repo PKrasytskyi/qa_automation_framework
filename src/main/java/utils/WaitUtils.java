@@ -27,6 +27,14 @@ public final class WaitUtils {
         return buildWait(driver).until(ExpectedConditions.urlContains(urlPart));
     }
 
+    public static WebDriver waitForFrameAndSwitchToIt(WebDriver driver, String nameOrId) {
+        return buildWait(driver).until(ExpectedConditions.frameToBeAvailableAndSwitchToIt(nameOrId));
+    }
+
+    public static WebDriver waitForFrameAndSwitchToIt(WebDriver driver, WebElement frameElement) {
+        return buildWait(driver).until(ExpectedConditions.frameToBeAvailableAndSwitchToIt(frameElement));
+    }
+
     private static WebDriverWait buildWait(WebDriver driver) {
         return new WebDriverWait(driver, Duration.ofSeconds(ConfigReader.getTimeout()));
     }
