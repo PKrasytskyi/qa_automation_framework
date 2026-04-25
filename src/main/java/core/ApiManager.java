@@ -13,6 +13,7 @@ public class ApiManager {
 
     private RequestSpecification baseRequestSpec;
     private RequestSpecification authorizedRequestSpec;
+    private RequestSpecification unAuthorizedRequestSpec;
 
     public RequestSpecification getBaseRequestSpec(){
         if(baseRequestSpec == null){
@@ -28,9 +29,21 @@ public class ApiManager {
         return authorizedRequestSpec;
     }
 
+    public RequestSpecification getUnAuthorizedRequestSpec(){
+        if(unAuthorizedRequestSpec == null){
+            unAuthorizedRequestSpec = buildUnAuthorizedRequestSpec();
+        }
+        return unAuthorizedRequestSpec;
+    }
+
     public RequestSpecification newRequest(){
         return RestAssured.given()
                 .spec(getBaseRequestSpec());
+    }
+
+    public RequestSpecification newUnAuthorizedRequest(){
+        return RestAssured.given()
+                .spec(getUnAuthorizedRequestSpec());
     }
 
     public RequestSpecification newAuthorizedRequest(){
@@ -41,6 +54,15 @@ public class ApiManager {
     private RequestSpecification buildBaseRequestSpec(){
         return new RequestSpecBuilder()
                 .setBaseUri(ConfigReader.getApiBaseUrl())
+                .setContentType(ContentType.JSON)
+                .addHeader("Accept", ContentType.JSON.toString())
+                .addFilter(new ApiCaptureFilter())
+                .build();
+    }
+
+    private RequestSpecification buildUnAuthorizedRequestSpec(){
+        return new RequestSpecBuilder()
+                .setBaseUri(ConfigReader.getTokenApiBaseUrl())
                 .setContentType(ContentType.JSON)
                 .addHeader("Accept", ContentType.JSON.toString())
                 .addFilter(new ApiCaptureFilter())

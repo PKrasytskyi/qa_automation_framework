@@ -19,7 +19,7 @@ public class UserCreateNegativeTests extends ApiBaseTest {
         this.client = new GoRestUserClient(api);
     }
 
-    @Test(groups = {"goRest.Api"})
+    @Test(groups = {"api"})
     public void shouldReturnAuthError(){
         CreateGoRestUserRequest request = new CreateGoRestUserRequest();
 
@@ -32,31 +32,33 @@ public class UserCreateNegativeTests extends ApiBaseTest {
 
         response.then().spec(ApiResponseSpec.statusCode401Js());
 
-        Assert.assertTrue(response.jsonPath().getString("message").contains("Authentication failed"), "Should return authentication failed");
+        Assert.assertTrue(response.getBody().asString().contains("Authentication failed"), "Should return authentication failed");
 
     }
 
-    @Test(groups = {"goRest.Api"})
-    public void shouldReturnValidationError(){
-        CreateGoRestUserRequest request = new CreateGoRestUserRequest();
+    @Test(groups = {"api"})
+    public void shouldReturnValidationErrorForDuplicateEmail() {
+        CreateGoRestUserRequest firstRequest = new CreateGoRestUserRequest();
+        firstRequest.setName("duplEmail");
+        firstRequest.setEmail("duplemail22@mail.test");
+        firstRequest.setGender("male");
+        firstRequest.setStatus("active");
 
-        request.setName("duplEmail");
-        request.setEmail("duplemail@mail.test");
-        request.setGender("male");
-        request.setStatus("active");
+        Response firstResponse = client.createUser(firstRequest);
+        Assert.assertEquals(firstResponse.getStatusCode(), 201, "First user should be created");
 
+        CreateGoRestUserRequest secondRequest = new CreateGoRestUserRequest();
+        secondRequest.setName("dupl2Email");
+        secondRequest.setEmail("duplemail22@mail.test");
+        secondRequest.setGender("male");
+        secondRequest.setStatus("active");
 
+        Response secondResponse = client.createUser(secondRequest);
 
-        Response response = client.createUser(request);
+        Assert.assertEquals(secondResponse.getStatusCode(), 422, "Status code should be 422");
+        Assert.assertTrue(secondResponse.getBody().asString().contains("has already been taken"),
+                "Response should contain duplicate email validation message");
 
-        CreateGoRestUserRequest request1 = new CreateGoRestUserRequest();
-
-        request.setName("dupl2Email");
-        request.setEmail("duplemail@mail.test");
-        request.setGender("male");
-        request.setStatus("active");
-
-        Assert.assertEquals(response.getStatusCode(), 422, "Status code should be 422");
-        Assert.assertTrue(response.jsonPath().getString("message").contains("has already been taken"));
+        client.deleteUserById(firstResponse.jsonPath().get("id"));
     }
 }

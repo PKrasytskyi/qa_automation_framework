@@ -28,7 +28,8 @@ public class GoRestUserClient {
     }
 
     public Response createUserWithoutAuthorization(CreateGoRestUserRequest bodyRequest) {
-        return apiManager.newRequest()
+        return apiManager.newUnAuthorizedRequest()
+                .header("Authorization", "")
                 .body(bodyRequest)
                 .when()
                 .post(USERS_ENDPOINT);
