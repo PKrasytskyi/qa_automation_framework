@@ -20,7 +20,7 @@ public class UsersGetTest extends ApiBaseTest {
         this.client = new GoRestUserClient(api);
     }
 
-    @Test(groups = {"api"})
+    @Test(groups = {"api-auth"})
     public void shouldReturnAllUsers(){
 
         Response response = client.getUsers();
