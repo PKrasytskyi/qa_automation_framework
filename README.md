@@ -26,7 +26,7 @@ This repository is built as a learning-oriented automation framework rather than
 - failure screenshots for UI tests
 - failure-only API request/response attachments for Allure
 - experimental AI-assisted failure triage for UI failures
-- GitHub Actions workflow with separate UI, API, and API auth jobs
+- GitHub Actions workflow with separate UI and stable API jobs
 
 ## Current Project Structure
 
@@ -274,11 +274,15 @@ Allure result files are written to `target/allure-results`.
 
 GitHub Actions workflow is stored in [ci.yml](C:\Users\demra\IdeaProjects\UI_API\.github\workflows\ci.yml).
 
-The workflow currently runs separate jobs for UI, public API, and token-based API auth execution. For authorized GoRest tests in CI, add the repository secret:
+The workflow currently runs separate jobs for UI and stable public API execution.
+
+Authorized GoRest tests are kept in the project as a separate `api-auth` suite, but are not part of the current CI pipeline because the external token-based service can make the pipeline unstable.
+
+If you later decide to run GoRest auth tests in CI, add the repository secret:
 
 - `API_TOKEN`
 
-Then expose it in the API auth job environment:
+Then expose it in a dedicated API auth job environment:
 
 ```yaml
 env:
@@ -291,8 +295,6 @@ The pipeline uploads separate artifacts for:
 - UI Allure results
 - API Surefire reports
 - API Allure results
-- API auth Surefire reports
-- API auth Allure results
 
 ## Experimental AI-Assisted Failure Triage
 
@@ -316,5 +318,6 @@ Setup:
 
 - UI listeners are tied to Selenium and should not be reused for API test classes.
 - API tests should inherit from [ApiBaseTest](C:\Users\demra\IdeaProjects\UI_API\src\main\java\core\ApiBaseTest.java), not from UI [BaseTest](C:\Users\demra\IdeaProjects\UI_API\src\main\java\core\BaseTest.java).
-- GoRest positive scenarios require `API_TOKEN` locally or in CI and run under the separate `api-auth` group.
+- GoRest positive scenarios require `API_TOKEN` and run under the separate `api-auth` group.
+- `api-auth` is currently intended for local or manual execution, not for the default CI pipeline.
 - JSONPlaceholder examples remain useful as public, no-auth training scenarios and stay in the main `api` suite.
