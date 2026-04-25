@@ -22,7 +22,7 @@ public class UserCreateTests extends ApiBaseTest {
         this.client = new GoRestUserClient(api);
     }
 
-    @Test(groups = {"api"})
+    @Test(groups = {"api-auth"})
     public void shouldCreateUserWithValidData(){
 
         CreateGoRestUserRequest request = new CreateGoRestUserRequest();
@@ -42,7 +42,7 @@ public class UserCreateTests extends ApiBaseTest {
 
     }
 
-    @Test(dataProvider = "usersWithValidData", dataProviderClass = UsersCreateGoRestData.class,groups = {"api"})
+    @Test(dataProvider = "usersWithValidData", dataProviderClass = UsersCreateGoRestData.class,groups = {"api-auth"})
     public void shouldCreateUserWithValidDataFromDataPr(CreateGoRestUserRequest request){
 
         Response response = client.createUser(request);
@@ -55,7 +55,7 @@ public class UserCreateTests extends ApiBaseTest {
 
     }
 
-    @Test(dataProvider = "usersCreateBuildBased", dataProviderClass = UserCreateBuildBasedGoRest.class, groups = {"api"})
+    @Test(dataProvider = "usersCreateBuildBased", dataProviderClass = UserCreateBuildBasedGoRest.class, groups = {"api-auth"})
     public void shouldCreateUsersSuccessfully(CreateGoRestUserRequest request){
 
         Response response = client.createUser(request);

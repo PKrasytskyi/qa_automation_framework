@@ -19,7 +19,7 @@ public class UserCreateNegativeTests extends ApiBaseTest {
         this.client = new GoRestUserClient(api);
     }
 
-    @Test(groups = {"api"})
+    @Test(groups = {"api-auth"})
     public void shouldReturnAuthError(){
         CreateGoRestUserRequest request = new CreateGoRestUserRequest();
 
@@ -36,7 +36,7 @@ public class UserCreateNegativeTests extends ApiBaseTest {
 
     }
 
-    @Test(groups = {"api"})
+    @Test(groups = {"api-auth"})
     public void shouldReturnValidationErrorForDuplicateEmail() {
         CreateGoRestUserRequest firstRequest = new CreateGoRestUserRequest();
         firstRequest.setName("duplEmail");

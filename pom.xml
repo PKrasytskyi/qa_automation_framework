@@ -141,5 +141,11 @@
                 <suiteXmlFile>testng-api.xml</suiteXmlFile>
             </properties>
         </profile>
+        <profile>
+            <id>api-auth</id>
+            <properties>
+                <suiteXmlFile>testng-api-auth.xml</suiteXmlFile>
+            </properties>
+        </profile>
     </profiles>
 </project>

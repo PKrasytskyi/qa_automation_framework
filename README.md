@@ -26,7 +26,7 @@ This repository is built as a learning-oriented automation framework rather than
 - failure screenshots for UI tests
 - failure-only API request/response attachments for Allure
 - experimental AI-assisted failure triage for UI failures
-- GitHub Actions workflow with separate UI and API jobs
+- GitHub Actions workflow with separate UI, API, and API auth jobs
 
 ## Current Project Structure
 
@@ -79,7 +79,9 @@ src
 - `assertions`
   Reusable assertion helpers for API domain checks.
 - `tests.api`
-  API scenarios for posts and GoRest user flows.
+  Public and stable API scenarios such as JSONPlaceholder.
+- `tests.api.goRestApiTests`
+  Token-based GoRest scenarios isolated in a separate auth-focused test group.
 - `tests.apiData` and `tests.builder`
   DataProviders and payload builders for API tests.
 - `listeners`
@@ -121,6 +123,8 @@ src
 - negative auth scenario without token
 - duplicate email validation scenario
 - cleanup via authorized delete call after selected create tests
+
+GoRest scenarios are isolated in the `api-auth` group so the main API regression flow stays stable even when the external token-based service is unavailable or restricted.
 
 ## API Design Notes
 
@@ -189,7 +193,7 @@ Prerequisites:
 - Java 17+
 - Maven 3.9+
 - Chrome installed for UI execution
-- GoRest personal access token for authorized GoRest tests
+- GoRest personal access token for authorized GoRest tests only
 
 Run the default suite:
 
@@ -215,18 +219,25 @@ Run the API suite:
 mvn clean test -Papi
 ```
 
-Run one API test class:
+Run the authorized API suite:
 
 ```powershell
 $env:API_TOKEN="your_gorest_token"
-mvn test -Papi "-Dtest=tests.api.goRestApiTests.UserCreateTests"
+mvn clean test -Papi-auth
 ```
 
-Run one API test method:
+Run one authorized API test class:
 
 ```powershell
 $env:API_TOKEN="your_gorest_token"
-mvn test -Papi "-Dtest=tests.api.goRestApiTests.UserCreateTests#shouldCreateUserWithValidData"
+mvn test -Papi-auth "-Dtest=tests.api.goRestApiTests.UserCreateTests"
+```
+
+Run one authorized API test method:
+
+```powershell
+$env:API_TOKEN="your_gorest_token"
+mvn test -Papi-auth "-Dtest=tests.api.goRestApiTests.UserCreateTests#shouldCreateUserWithValidData"
 ```
 
 Generate and open the Allure report:
@@ -242,12 +253,14 @@ Suite files live in the project root:
 - [testng-ui.xml](C:\Users\demra\IdeaProjects\UI_API\testng-ui.xml)
 - [testng-smoke.xml](C:\Users\demra\IdeaProjects\UI_API\testng-smoke.xml)
 - [testng-api.xml](C:\Users\demra\IdeaProjects\UI_API\testng-api.xml)
+- [testng-api-auth.xml](C:\Users\demra\IdeaProjects\UI_API\testng-api-auth.xml)
 
 Current intent:
 
 - `testng-ui.xml` runs the UI regression-style set
 - `testng-smoke.xml` runs the smaller smoke subset
-- `testng-api.xml` discovers API tests from the `tests.api` package and runs the `api` group
+- `testng-api.xml` runs the stable `api` group
+- `testng-api-auth.xml` runs the token-based `api-auth` group for GoRest
 
 ## Allure Reporting
 
@@ -261,11 +274,11 @@ Allure result files are written to `target/allure-results`.
 
 GitHub Actions workflow is stored in [ci.yml](C:\Users\demra\IdeaProjects\UI_API\.github\workflows\ci.yml).
 
-The workflow currently runs separate jobs for UI and API execution. For authorized GoRest tests in CI, add the repository secret:
+The workflow currently runs separate jobs for UI, public API, and token-based API auth execution. For authorized GoRest tests in CI, add the repository secret:
 
 - `API_TOKEN`
 
-Then expose it in the API job environment:
+Then expose it in the API auth job environment:
 
 ```yaml
 env:
@@ -278,6 +291,8 @@ The pipeline uploads separate artifacts for:
 - UI Allure results
 - API Surefire reports
 - API Allure results
+- API auth Surefire reports
+- API auth Allure results
 
 ## Experimental AI-Assisted Failure Triage
 
@@ -301,5 +316,5 @@ Setup:
 
 - UI listeners are tied to Selenium and should not be reused for API test classes.
 - API tests should inherit from [ApiBaseTest](C:\Users\demra\IdeaProjects\UI_API\src\main\java\core\ApiBaseTest.java), not from UI [BaseTest](C:\Users\demra\IdeaProjects\UI_API\src\main\java\core\BaseTest.java).
-- GoRest positive scenarios require `API_TOKEN` locally or in CI.
-- JSONPlaceholder examples remain useful as public, no-auth training scenarios.
+- GoRest positive scenarios require `API_TOKEN` locally or in CI and run under the separate `api-auth` group.
+- JSONPlaceholder examples remain useful as public, no-auth training scenarios and stay in the main `api` suite.
