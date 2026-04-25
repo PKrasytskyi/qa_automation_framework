@@ -55,7 +55,7 @@ public class UserCreateTests extends ApiBaseTest {
 
     }
 
-    @Test(dataProvider = "usersCreateBuildBased", dataProviderClass = UserCreateBuildBasedGoRest.class, groups = {"goRest.Api"})
+    @Test(dataProvider = "usersCreateBuildBased", dataProviderClass = UserCreateBuildBasedGoRest.class, groups = {"api"})
     public void shouldCreateUsersSuccessfully(CreateGoRestUserRequest request){
 
         Response response = client.createUser(request);

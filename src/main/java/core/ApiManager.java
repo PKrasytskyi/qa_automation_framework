@@ -94,5 +94,6 @@ public class ApiManager {
         RestAssured.reset();
         baseRequestSpec = null;
         authorizedRequestSpec = null;
+        unAuthorizedRequestSpec = null;
     }
 }
