@@ -1,13 +1,14 @@
 package core;
 
 import listeners.ApiAllureFailureListener;
+import listeners.TestListener;
 import api.logging.ApiCallLogStore;
 import io.restassured.RestAssured;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Listeners;
 
-@Listeners(ApiAllureFailureListener.class)
+@Listeners({TestListener.class, ApiAllureFailureListener.class})
 public abstract class ApiBaseTest {
 
     protected ApiManager api;

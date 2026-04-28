@@ -15,10 +15,25 @@ import org.openqa.selenium.WebDriver;
 public class TestListener implements ITestListener, IInvokedMethodListener {
 
     public static final String FAILURE_CONTEXT_ATTRIBUTE = "failureContext";
+    private static final String ANSI_RESET = "\u001B[0m";
+    private static final String ANSI_GREEN = "\u001B[32m";
+    private static final String ANSI_YELLOW = "\u001B[33m";
+    private static final String ANSI_RED = "\u001B[31m";
+
+    @Override
+    public void onTestSuccess(ITestResult result) {
+        consoleTestResult(result);
+    }
 
     @Override
     public void onTestFailure(ITestResult result) {
+        consoleTestResult(result);
         populateFailureContext(result);
+    }
+
+    @Override
+    public void onTestSkipped(ITestResult result) {
+        consoleTestResult(result);
     }
 
     @Override
@@ -28,6 +43,19 @@ public class TestListener implements ITestListener, IInvokedMethodListener {
         }
 
         populateFailureContext(result);
+    }
+
+    public void consoleTestResult(ITestResult result){
+        String testName = result.getMethod().getMethodName();
+
+        if(result.getStatus() == ITestResult.FAILURE){
+            System.out.println(ANSI_RED + "Test: " + testName + " FAILED" + ANSI_RESET);
+        } else if (result.getStatus() == ITestResult.SKIP) {
+            System.out.println(ANSI_YELLOW + "Test: " + testName + " SKIPPED" + ANSI_RESET);
+        } else if(result.getStatus() == ITestResult.SUCCESS)
+        {
+            System.out.println(ANSI_GREEN + "Test: " + testName + " PASSED" + ANSI_RESET);
+        }
     }
 
     private void populateFailureContext(ITestResult result) {
