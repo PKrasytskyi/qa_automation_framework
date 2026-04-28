@@ -1,31 +1,18 @@
 package tests.api.goRestApiTests;
 
-import api.clients.GoRestUserClient;
 import api.models.request.CreateGoRestUserRequest;
 import api.models.response.GoRestUserResponse;
 import api.models.update.UpdateGoRestUserRequest;
 import api.specs.ApiResponseSpec;
 import assertions.GoRestUserAssertions;
-import core.ApiBaseTest;
 import io.restassured.response.Response;
 import org.testng.Assert;
-import org.testng.annotations.AfterMethod;
-import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 import tests.Helpers.EmailGenerator;
 import tests.builder.GoRestRequestBuilder;
 import tests.builder.GoRestUpdateRequestBuilder;
 
-public class UpdateUserTests extends ApiBaseTest {
-
-    private GoRestUserClient client;
-    private Integer createdUserId;
-
-    @BeforeMethod(alwaysRun = true)
-    public void initClient(){
-        this.client = new GoRestUserClient(api);
-        this.createdUserId = null;
-    }
+public class UpdateUserTests extends GoRestUserCrudBaseTest {
 
     @Test(groups = {"api-auth"})
     public void updateUserNameById(){
@@ -41,8 +28,8 @@ public class UpdateUserTests extends ApiBaseTest {
 
         response.then().spec(ApiResponseSpec.statusCode201Js());
         GoRestUserResponse userResponse = response.as(GoRestUserResponse.class);
-
-        createdUserId = userResponse.getId();
+        int createdUserId = userResponse.getId();
+        trackCreatedUser(createdUserId);
 
         UpdateGoRestUserRequest update = new GoRestUpdateRequestBuilder()
 
@@ -62,13 +49,5 @@ public class UpdateUserTests extends ApiBaseTest {
 
         Assert.assertEquals(createdUserId, userResponse1.getId());
         GoRestUserAssertions.assertUpdatedUserMatchesRequest(userResponse1, update);
-    }
-
-    @AfterMethod(alwaysRun = true)
-    public void deleteClient(){
-        if(createdUserId != null){
-            client.deleteUserById(createdUserId);
-            createdUserId = null;
-        }
     }
 }
