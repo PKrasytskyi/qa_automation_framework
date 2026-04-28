@@ -1,8 +1,11 @@
 package api.clients;
 
 import api.models.request.CreateGoRestUserRequest;
+import api.models.request.PatchGoRestUserRequest;
+import api.models.update.UpdateGoRestUserRequest;
 import core.ApiManager;
 import io.restassured.response.Response;
+
 
 public class GoRestUserClient {
 
@@ -33,6 +36,27 @@ public class GoRestUserClient {
                 .body(bodyRequest)
                 .when()
                 .post(USERS_ENDPOINT);
+    }
+
+    public Response updateUserById(int id, UpdateGoRestUserRequest updateRequest){
+        return apiManager.newAuthorizedRequest()
+                .body(updateRequest)
+                .when()
+                .put(USERS_ENDPOINT + "/" + id);
+    }
+
+    public Response patchUserById(int id, PatchGoRestUserRequest patchRequest){
+        return  apiManager.newAuthorizedRequest()
+                .body(patchRequest)
+                .when()
+                .patch(USERS_ENDPOINT + "/" + id);
+    }
+
+    public Response getUserById(int id){
+        return apiManager.newAuthorizedRequest()
+                .pathParam("id", id)
+                .when()
+                .get(USERS_ENDPOINT + "/{id}");
     }
 
     public Response deleteUserById(int id){
