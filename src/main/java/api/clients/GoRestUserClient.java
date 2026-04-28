@@ -1,6 +1,7 @@
 package api.clients;
 
 import api.models.request.CreateGoRestUserRequest;
+import api.models.request.PatchGoRestUserRequest;
 import api.models.update.UpdateGoRestUserRequest;
 import core.ApiManager;
 import io.restassured.response.Response;
@@ -42,6 +43,13 @@ public class GoRestUserClient {
                 .body(updateRequest)
                 .when()
                 .put(USERS_ENDPOINT + "/" + id);
+    }
+
+    public Response patchUserById(int id, PatchGoRestUserRequest patchRequest){
+        return  apiManager.newAuthorizedRequest()
+                .body(patchRequest)
+                .when()
+                .patch(USERS_ENDPOINT + "/" + id);
     }
 
     public Response getUserById(int id){
