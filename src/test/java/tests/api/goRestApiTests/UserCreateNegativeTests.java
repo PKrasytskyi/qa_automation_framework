@@ -1,23 +1,13 @@
 package tests.api.goRestApiTests;
 
-import api.clients.GoRestUserClient;
 import api.models.request.CreateGoRestUserRequest;
 import api.specs.ApiResponseSpec;
-import core.ApiBaseTest;
 import io.restassured.response.Response;
 import org.testng.Assert;
-import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 import tests.Helpers.EmailGenerator;
 
-public class UserCreateNegativeTests extends ApiBaseTest {
-
-    private GoRestUserClient client;
-
-    @BeforeMethod(alwaysRun = true)
-    public void initClient(){
-        this.client = new GoRestUserClient(api);
-    }
+public class UserCreateNegativeTests extends GoRestUserCrudBaseTest {
 
     @Test(groups = {"api-auth"})
     public void shouldReturnAuthError(){
@@ -46,6 +36,7 @@ public class UserCreateNegativeTests extends ApiBaseTest {
 
         Response firstResponse = client.createUser(firstRequest);
         Assert.assertEquals(firstResponse.getStatusCode(), 201, "First user should be created");
+        trackCreatedUser(firstResponse.jsonPath().getInt("id"));
 
         CreateGoRestUserRequest secondRequest = new CreateGoRestUserRequest();
         secondRequest.setName("dupl2Email");
@@ -58,7 +49,5 @@ public class UserCreateNegativeTests extends ApiBaseTest {
         Assert.assertEquals(secondResponse.getStatusCode(), 422, "Status code should be 422");
         Assert.assertTrue(secondResponse.getBody().asString().contains("has already been taken"),
                 "Response should contain duplicate email validation message");
-
-        client.deleteUserById(firstResponse.jsonPath().get("id"));
     }
 }

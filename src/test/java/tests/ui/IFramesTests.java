@@ -11,10 +11,10 @@ public class IFramesTests extends BaseTest {
     @Test(groups = {"ui"})
     public void shouldDefaultEditorTextDisplayed(){
 
-        pages.getMainPage().openFramesPage();
-        pages.getFramesPage().openIFrames();
-        pages.getFramesPage().switchToEditorFrame();
-        Assert.assertEquals(pages.getFramesPage().getEditorText(), DEFAULT_EDITOR_TEXT, "Text is incorrect "
-                + pages.getFramesPage().getEditorText());
+        getPages().getMainPage().openFramesPage();
+        getPages().getFramesPage().openIFrames();
+        getPages().getFramesPage().switchToEditorFrame();
+        Assert.assertEquals(getPages().getFramesPage().getEditorText(), DEFAULT_EDITOR_TEXT, "Text is incorrect "
+                + getPages().getFramesPage().getEditorText());
     }
 }

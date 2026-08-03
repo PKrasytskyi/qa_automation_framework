@@ -1,32 +1,19 @@
 package tests.api.goRestApiTests;
 
-import api.clients.GoRestUserClient;
 import api.models.request.CreateGoRestUserRequest;
 import api.models.request.PatchGoRestUserRequest;
 import api.models.response.GoRestUserResponse;
 import api.specs.ApiResponseSpec;
 import assertions.GoRestUserAssertions;
-import core.ApiBaseTest;
 import io.restassured.response.Response;
 import org.testng.Assert;
-import org.testng.annotations.AfterMethod;
-import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 import tests.Helpers.EmailGenerator;
 import tests.builder.GoRestPatchBuilder;
 import tests.builder.GoRestPatchExistUserBuilder;
 import tests.builder.GoRestRequestBuilder;
 
-public class PatchUserTests extends ApiBaseTest {
-
-    private GoRestUserClient client;
-    private Integer createdUserId;
-
-    @BeforeMethod(alwaysRun = true)
-    public void initClient(){
-        this.client = new GoRestUserClient(api);
-        this.createdUserId = null;
-    }
+public class PatchUserTests extends GoRestUserCrudBaseTest {
 
     @Test(groups = {"api-auth"})
     public void shouldReturnStatusCode422(){
@@ -41,8 +28,8 @@ public class PatchUserTests extends ApiBaseTest {
         response.then().spec(ApiResponseSpec.statusCode201Js());
 
         GoRestUserResponse userResponse = response.as(GoRestUserResponse.class);
-
-        createdUserId = userResponse.getId();
+        int createdUserId = userResponse.getId();
+        trackCreatedUser(createdUserId);
 
         PatchGoRestUserRequest patch = new GoRestPatchBuilder()
                 .withName("Forni")
@@ -68,7 +55,8 @@ public class PatchUserTests extends ApiBaseTest {
 
         GoRestUserResponse userResponse = response.as(GoRestUserResponse.class);
         GoRestUserAssertions.assertCreatedUserMatchesRequest(userResponse, request);
-        createdUserId = userResponse.getId();
+        int createdUserId = userResponse.getId();
+        trackCreatedUser(createdUserId);
 
         PatchGoRestUserRequest patch = new GoRestPatchExistUserBuilder()
                 .fromUser(userResponse)
@@ -85,13 +73,5 @@ public class PatchUserTests extends ApiBaseTest {
 
         Assert.assertEquals(userResponse1.getId(), createdUserId);
         GoRestUserAssertions.assertPatchedUserMatchesRequest(userResponse1, patch);
-    }
-
-    @AfterMethod(alwaysRun = true)
-    public void deleteClient(){
-        if(createdUserId != null){
-            client.deleteUserById(createdUserId);
-            createdUserId = null;
-        }
     }
 }

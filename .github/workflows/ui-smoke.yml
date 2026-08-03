@@ -1,0 +1,50 @@
+name: UI smoke CI
+
+on:
+  push:
+    branches:
+      - main
+      - master
+      - dev
+  pull_request:
+
+jobs:
+  ui-smoke:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: Build test image
+        run: docker compose build
+
+      - name: Start Selenium Grid
+        run: docker compose up -d selenium --wait
+
+      - name: Run UI smoke tests
+        run: docker compose run --rm smoke
+
+      - name: Upload Surefire Reports
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: surefire-reports-ui-smoke
+          path: target/smoke/surefire-reports
+          if-no-files-found: warn
+
+      - name: Upload Allure Reports
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: allure-reports-ui-smoke
+          path: target/smoke/allure-results
+          if-no-files-found: warn
+
+      - name: Print Selenium logs on failure
+        if: failure()
+        run: docker compose logs selenium
+
+      - name: Stop containers
+        if: always()
+        run: docker compose down -v

@@ -13,34 +13,34 @@ public class MultipleWindowsTests extends BaseTest {
     @Test(groups = {"ui"})
     public void shouldOpenNewWindowAndReadText(){
 
-        pages.getMainPage().openMultipleWindowsPage();
-        pages.getMultipleWindowsPage().switchToAnotherWindow();
-        Assert.assertTrue(pages.getMultipleWindowsPage().getNewPageText().contains(NEW_PAGE_TEXT), "Unexpected new windows text "
-            + pages.getMultipleWindowsPage().getNewPageText());
+        getPages().getMainPage().openMultipleWindowsPage();
+        getPages().getMultipleWindowsPage().switchToAnotherWindow();
+        Assert.assertTrue(getPages().getMultipleWindowsPage().getNewPageText().contains(NEW_PAGE_TEXT), "Unexpected new windows text "
+            + getPages().getMultipleWindowsPage().getNewPageText());
     }
 
     @Test(groups = {"ui"})
     public void shouldReturnToOriginalWindowAfterSwitchBack(){
 
-        pages.getMainPage().openMultipleWindowsPage();
-        pages.getMultipleWindowsPage().switchToAnotherWindow();
-        pages.getMultipleWindowsPage().switchToOriginalPage();
-        Assert.assertTrue(pages.getMultipleWindowsPage().getOriginalPageText().contains(ORIGINAL_PAGE_TEXT), "Unexpected text");
+        getPages().getMainPage().openMultipleWindowsPage();
+        getPages().getMultipleWindowsPage().switchToAnotherWindow();
+        getPages().getMultipleWindowsPage().switchToOriginalPage();
+        Assert.assertTrue(getPages().getMultipleWindowsPage().getOriginalPageText().contains(ORIGINAL_PAGE_TEXT), "Unexpected text");
 
     }
 
     @Test(groups = {"ui"})
     public void shouldOpenNewWindowAfterClick(){
 
-        pages.getMainPage().openMultipleWindowsPage();
-        pages.getMultipleWindowsPage().switchToAnotherWindow();
-        Assert.assertTrue(pages.getMultipleWindowsPage().getCurrentLink().contains(PARTIAL_LINK_OF_NEW_PAGE), "Unexpected text");
+        getPages().getMainPage().openMultipleWindowsPage();
+        getPages().getMultipleWindowsPage().switchToAnotherWindow();
+        Assert.assertTrue(getPages().getMultipleWindowsPage().getCurrentLink().contains(PARTIAL_LINK_OF_NEW_PAGE), "Unexpected text");
     }
 
     @Test(groups = {"ui"})
     public void shouldOriginalWindowDisplayedAfterCloseNewWindow(){
 
-        pages.getMainPage().openMultipleWindowsPage();
-        Assert.assertTrue(pages.getMultipleWindowsPage().closeNewWindowsReturnToOriginalAndReadText().contains(ORIGINAL_PAGE_TEXT), "Unexpected text" );
+        getPages().getMainPage().openMultipleWindowsPage();
+        Assert.assertTrue(getPages().getMultipleWindowsPage().closeNewWindowsReturnToOriginalAndReadText().contains(ORIGINAL_PAGE_TEXT), "Unexpected text" );
     }
 }

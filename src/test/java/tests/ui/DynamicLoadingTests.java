@@ -11,20 +11,20 @@ public class DynamicLoadingTests extends BaseTest {
     @Test(groups = {"ui"})
     public void isFinishTextVisibleExample1(){
 
-        pages.getMainPage().openDynamicLoadingPage();
-        pages.getDynamicLoadingPage().openExample1();
-        pages.getDynamicLoadingPageExample1().clickStartButton();
-        Assert.assertTrue(pages.getDynamicLoadingPageExample1().waitForLoadingBarIsInvisible(), "Loading bar is still visible");
-        Assert.assertTrue(pages.getDynamicLoadingPageExample1().isFinishTextVisible(FINISH_TEXT), "Finish text is not visible");
+        getPages().getMainPage().openDynamicLoadingPage();
+        getPages().getDynamicLoadingPage().openExample1();
+        getPages().getDynamicLoadingPageExample1().clickStartButton();
+        Assert.assertTrue(getPages().getDynamicLoadingPageExample1().waitForLoadingBarIsInvisible(), "Loading bar is still visible");
+        Assert.assertTrue(getPages().getDynamicLoadingPageExample1().isFinishTextVisible(FINISH_TEXT), "Finish text is not visible");
     }
 
     @Test(groups = {"ui"})
     public void isFinishTextVisibleExample2(){
 
-        pages.getMainPage().openDynamicLoadingPage();
-        pages.getDynamicLoadingPage().openExample2();
-        pages.getDynamicLoadingPageExample2().clickStartButton();
-        Assert.assertTrue(pages.getDynamicLoadingPageExample2().isLoadingBarInvisible(), "Loading bar is still visible");
-        Assert.assertTrue(pages.getDynamicLoadingPageExample2().isFinishTextVisible(FINISH_TEXT), "Finish text is not visible");
+        getPages().getMainPage().openDynamicLoadingPage();
+        getPages().getDynamicLoadingPage().openExample2();
+        getPages().getDynamicLoadingPageExample2().clickStartButton();
+        Assert.assertTrue(getPages().getDynamicLoadingPageExample2().isLoadingBarInvisible(), "Loading bar is still visible");
+        Assert.assertTrue(getPages().getDynamicLoadingPageExample2().isFinishTextVisible(FINISH_TEXT), "Finish text is not visible");
     }
 }

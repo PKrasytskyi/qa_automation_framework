@@ -14,32 +14,32 @@ public class NestedFramesTests extends BaseTest {
     @Test(groups = {"smoke", "ui"})
     public void shouldOpenLeftFrameAndReadText(){
 
-        pages.getMainPage().openNestedFramesPage();
-        Assert.assertTrue(pages.getNestedFramesPage().getLeftFrameText().contains(TEXT_OF_LEFT_FRAME), "Unexpected frame text "
-           + pages.getNestedFramesPage().getFrameText());
+        getPages().getMainPage().openNestedFramesPage();
+        Assert.assertTrue(getPages().getNestedFramesPage().getLeftFrameText().contains(TEXT_OF_LEFT_FRAME), "Unexpected frame text "
+           + getPages().getNestedFramesPage().getFrameText());
     }
 
     @Test(groups = {"smoke", "ui"})
     public void shouldOpenRightFrameAndReadText(){
 
-        pages.getMainPage().openNestedFramesPage();
-        Assert.assertTrue(pages.getNestedFramesPage().getRightFrameText().contains(TEXT_OF_RIGHT_FRAME), "Unexpected frame text "
-                + pages.getNestedFramesPage().getFrameText());
+        getPages().getMainPage().openNestedFramesPage();
+        Assert.assertTrue(getPages().getNestedFramesPage().getRightFrameText().contains(TEXT_OF_RIGHT_FRAME), "Unexpected frame text "
+                + getPages().getNestedFramesPage().getFrameText());
     }
 
     @Test(groups = {"smoke", "ui"})
     public void shouldOpenMiddleFrameAndReadText(){
 
-        pages.getMainPage().openNestedFramesPage();
-        Assert.assertTrue(pages.getNestedFramesPage().getMiddleFrameText().contains(TEXT_OF_MIDDLE_FRAME), "Unexpected frame text "
-            + pages.getNestedFramesPage().getFrameText());
+        getPages().getMainPage().openNestedFramesPage();
+        Assert.assertTrue(getPages().getNestedFramesPage().getMiddleFrameText().contains(TEXT_OF_MIDDLE_FRAME), "Unexpected frame text "
+            + getPages().getNestedFramesPage().getFrameText());
     }
 
     @Test(groups = {"smoke", "ui"})
     public void shouldOpenBottomFrameAndReadText(){
 
-        pages.getMainPage().openNestedFramesPage();
-        Assert.assertTrue(pages.getNestedFramesPage().getBottomFrameText().contains(TEXT_OF_BOTTOM_FRAME), "Unexpected frame text "
-            + pages.getNestedFramesPage().getFrameText());
+        getPages().getMainPage().openNestedFramesPage();
+        Assert.assertTrue(getPages().getNestedFramesPage().getBottomFrameText().contains(TEXT_OF_BOTTOM_FRAME), "Unexpected frame text "
+            + getPages().getNestedFramesPage().getFrameText());
     }
 }

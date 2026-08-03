@@ -1,24 +1,14 @@
 package tests.api.goRestApiTests;
 
-import api.clients.GoRestUserClient;
 import api.models.response.GoRestUserResponse;
 import api.specs.ApiResponseSpec;
-import core.ApiBaseTest;
 import io.restassured.response.Response;
 import org.testng.Assert;
-import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 import java.util.List;
 
-public class UsersGetTest extends ApiBaseTest {
-
-    private GoRestUserClient client;
-
-    @BeforeMethod(alwaysRun = true)
-    public void initClient(){
-        this.client = new GoRestUserClient(api);
-    }
+public class UsersGetTest extends GoRestUserCrudBaseTest {
 
     @Test(groups = {"api-auth"})
     public void shouldReturnAllUsers(){

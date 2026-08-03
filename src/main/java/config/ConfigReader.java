@@ -1,5 +1,7 @@
 package config;
 
+import driver.ExecutionMode;
+
 import java.io.InputStream;
 import java.util.Properties;
 
@@ -18,6 +20,7 @@ public class ConfigReader {
     private static final int DEFAULT_MAX_PAGE_SOURCE_CHARS = 12_000;
     private static final String DEFAULT_API_TOKEN = "";
     private static final String DEFAULT_API_KEY = "";
+    private static final String EXECUTE_MODE = "";
 
     static {
         try {
@@ -56,6 +59,23 @@ public class ConfigReader {
 
     public static int getPageLoadTimeout() {
         return getInt("page.load.timeout", "PAGE_LOAD_TIMEOUT", DEFAULT_PAGE_LOAD_TIMEOUT);
+    }
+
+    public static ExecutionMode getExecuteMode(){
+        String value = getString(
+                "execute.mode",
+                "EXECUTE_MODE",
+                ExecutionMode.LOCAL.name()
+        );
+        return ExecutionMode.valueOf(value.trim().toUpperCase());
+    }
+
+    public static String getSeleniumRemoteUrl(){
+        return getString(
+                "selenium.remote.url",
+                "SELENIUM_REMOTE_URL",
+                "http://localhost:4444"
+        );
     }
 
     public static boolean isHeadless() {

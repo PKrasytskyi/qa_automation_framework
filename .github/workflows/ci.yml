@@ -22,10 +22,10 @@ jobs:
           java-version: '17'
           cache: maven
 
-      - name: Run UI smoke suite
+      - name: Run UI suite
         env:
           HEADLESS: "true"
-        run: mvn --batch-mode clean test -Psmoke
+        run: mvn --batch-mode clean test -Pui
 
       - name: Upload Surefire reports
         if: always()

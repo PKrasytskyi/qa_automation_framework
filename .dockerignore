@@ -1,0 +1,15 @@
+.git
+.github
+.idea
+.m2repo
+.allure
+allure-results
+artifacts
+chrome
+chromedriver
+logs
+reports
+target
+*.iml
+*.dump
+*.dumpstream
