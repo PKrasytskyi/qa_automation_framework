@@ -19,6 +19,13 @@
         <maven.surefire.plugin.version>3.2.5</maven.surefire.plugin.version>
         <allure.maven.plugin.version>2.12.0</allure.maven.plugin.version>
         <suiteXmlFile>testng-ui.xml</suiteXmlFile>
+        <allureResultsDirectory>
+            ${project.build.directory}/allure-results
+        </allureResultsDirectory>
+        <surefireReportsDirectory>
+            ${project.build.directory}/surefire-reports
+        </surefireReportsDirectory>
+        <test.run.directory>${project.basedir}/target</test.run.directory>
     </properties>
 
     <dependencyManagement>
@@ -86,6 +93,7 @@
     </dependencies>
 
     <build>
+        <directory>${test.run.directory}</directory>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -130,9 +138,21 @@
             </properties>
         </profile>
         <profile>
+            <id>ui-parallel</id>
+            <properties>
+                <suiteXmlFile>testng-ui-parallel.xml</suiteXmlFile>
+            </properties>
+        </profile>
+        <profile>
             <id>smoke</id>
             <properties>
                 <suiteXmlFile>testng-smoke.xml</suiteXmlFile>
+            </properties>
+        </profile>
+        <profile>
+            <id>smoke-parallel</id>
+            <properties>
+                <suiteXmlFile>testng-smoke-parallel.xml</suiteXmlFile>
             </properties>
         </profile>
         <profile>

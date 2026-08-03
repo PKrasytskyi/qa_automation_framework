@@ -152,6 +152,8 @@ Current properties:
 baseUrl=https://the-internet.herokuapp.com/
 api.baseUrl=https://jsonplaceholder.typicode.com
 api.tokenBaseUrl=https://gorest.co.in/
+execute.mode=LOCAL
+selenium.remote.url=http://localhost:4444
 browser=chrome
 headless=true
 explicit.wait=10
@@ -172,6 +174,8 @@ Environment variables override file values when present:
 BASE_URL
 API_BASE_URL
 API_TOKEN_BASE_URL
+EXECUTE_MODE
+SELENIUM_REMOTE_URL
 API_TOKEN
 API_KEY
 BROWSER
@@ -195,6 +199,12 @@ Prerequisites:
 - Chrome installed for UI execution
 - GoRest personal access token for authorized GoRest tests only
 
+`execute.mode` controls how UI tests create their browser session:
+
+- `LOCAL` starts Chrome on the same machine as the test runner.
+- `REMOTE` starts a `RemoteWebDriver` session on Selenium Grid. In Docker
+  Compose, use `SELENIUM_REMOTE_URL=http://selenium:4444`.
+
 Run the default suite:
 
 ```powershell
@@ -211,6 +221,18 @@ Run the smoke UI suite:
 
 ```powershell
 mvn clean test -Psmoke
+```
+
+Run the parallel smoke suite:
+
+```powershell
+mvn clean test -Psmoke-parallel
+```
+
+Run the parallel UI suite:
+
+```powershell
+mvn clean test -Pui-parallel
 ```
 
 Run the API suite:
@@ -251,16 +273,128 @@ mvn allure:serve
 Suite files live in the project root:
 
 - [testng-ui.xml](C:\Users\demra\IdeaProjects\UI_API\testng-ui.xml)
+- [testng-ui-parallel.xml](C:\Users\demra\IdeaProjects\UI_API\testng-ui-parallel.xml)
 - [testng-smoke.xml](C:\Users\demra\IdeaProjects\UI_API\testng-smoke.xml)
+- [testng-smoke-parallel.xml](C:\Users\demra\IdeaProjects\UI_API\testng-smoke-parallel.xml)
 - [testng-api.xml](C:\Users\demra\IdeaProjects\UI_API\testng-api.xml)
 - [testng-api-auth.xml](C:\Users\demra\IdeaProjects\UI_API\testng-api-auth.xml)
 
 Current intent:
 
 - `testng-ui.xml` runs the UI regression-style set
+- `testng-ui-parallel.xml` runs the UI set in parallel
 - `testng-smoke.xml` runs the smaller smoke subset
+- `testng-smoke-parallel.xml` runs tests in the `smoke` group in parallel
 - `testng-api.xml` runs the stable `api` group
 - `testng-api-auth.xml` runs the token-based `api-auth` group for GoRest
+
+Parallel suites use TestNG's `parallel` and `thread-count` attributes. Start
+with two threads and increase the value only after stable repeated runs. For
+remote UI execution, Selenium Grid must allow at least the same number of
+concurrent sessions as the TestNG thread count.
+
+## Docker
+
+The project provides one reusable test-runner image and a Docker Compose setup
+with a Selenium Chrome node. The test-runner image contains Java 17, Maven,
+Chromium, and ChromeDriver. Compose UI services use remote execution through
+`selenium/standalone-chrome`.
+
+Prerequisites:
+
+- Docker Desktop is running with Linux containers enabled.
+- The Docker CLI is available in the terminal (`docker --version`).
+- For `api-auth`, set `API_TOKEN` only in the shell or CI secret; never commit
+  it to `config.properties`.
+
+Build the image:
+
+```powershell
+docker compose build
+```
+
+Rebuild before a run when the Dockerfile, Maven configuration, entrypoint, or
+test code changed. To also refresh the base image layer, use:
+
+```powershell
+docker compose build --pull
+```
+
+### Docker Compose suites
+
+Run each suite in a new disposable container:
+
+```powershell
+docker compose run --build --rm smoke
+docker compose run --build --rm smoke-parallel
+docker compose run --build --rm ui
+docker compose run --build --rm ui-parallel
+docker compose run --build --rm api
+```
+
+Run the authorized API suite:
+
+```powershell
+$env:API_TOKEN="your_gorest_token"
+docker compose run --build --rm api-auth
+```
+
+Compose UI services wait until the Selenium service becomes healthy and then use:
+
+```text
+EXECUTE_MODE=REMOTE
+SELENIUM_REMOTE_URL=http://selenium:4444
+```
+
+The Selenium node capacity must match the parallel TestNG suite. For a suite
+with `thread-count="2"`, configure the Selenium service with:
+
+```yaml
+environment:
+  SE_NODE_MAX_SESSIONS: 2
+  SE_NODE_OVERRIDE_MAX_SESSIONS: "true"
+```
+
+After changing these Selenium variables, recreate the Selenium container:
+
+```powershell
+docker compose up -d --force-recreate selenium
+```
+
+Then check the Grid status:
+
+```powershell
+docker compose exec selenium curl -s http://localhost:4444/status
+```
+
+The response must report a `maxSessions` value that is not lower than the
+parallel suite's `thread-count`.
+
+### Docker reports and logs
+
+Each suite uses its own Maven build directory. Docker results are written to:
+
+```text
+target/<suite>/allure-results
+target/<suite>/surefire-reports
+```
+
+For example, the parallel smoke run writes to:
+
+```text
+target/smoke-parallel/allure-results
+target/smoke-parallel/surefire-reports
+```
+
+Use Compose logs to investigate a failed container run:
+
+```powershell
+docker compose logs --tail 100 selenium
+docker compose logs -f --tail 100 selenium smoke-parallel
+```
+
+If a container is launched with `--rm`, it is removed at the end of the run.
+Omit `--rm` temporarily when its post-run logs are needed.
 
 ## Allure Reporting
 
@@ -268,7 +402,9 @@ Current intent:
 - API failures attach captured request/response traffic only on failed tests
 - API auth headers are masked before traffic is stored for reporting
 
-Allure result files are written to `target/allure-results`.
+For a local Maven run, Allure result files are written to
+`target/allure-results`. Docker suite runs use isolated folders under
+`target/<suite>/allure-results`.
 
 ## CI
 

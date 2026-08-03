@@ -4,50 +4,56 @@ import config.ConfigReader;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
+import org.openqa.selenium.remote.RemoteWebDriver;
 
-import java.time.Duration;
-import java.util.HashMap;
-import java.util.Map;
+import java.net.MalformedURLException;
+import java.net.URI;
 
 public class BrowserManager {
 
-    public static WebDriver createDriver(String browser) {
-
-        return switch (browser.toLowerCase()) {
-            case "chrome" -> createChrome();
-            //case "firefox" -> new FirefoxDriver();
-            default -> throw new RuntimeException("Browser not supported");
+    public static WebDriver createDriver(String browser){
+        return switch (browser.toLowerCase()){
+            case "chrome" -> createChromeDriver();
+            default -> throw new IllegalArgumentException(
+                    "Unsupported browser:" + browser
+            );
         };
     }
 
-    private static WebDriver createChrome() {
+    private static WebDriver createChromeDriver() {
 
+        ChromeOptions options = createChromeOptions();
 
+        return switch (ConfigReader.getExecuteMode()){
+            case LOCAL -> new ChromeDriver(options);
+            case REMOTE -> createRemoteDriver(options);
+        };
+    }
+
+    private static WebDriver createRemoteDriver(ChromeOptions options){
+                String remoteUrl = ConfigReader.getSeleniumRemoteUrl();
+
+            try {
+                return new RemoteWebDriver(
+                        URI.create(remoteUrl).toURL(), options
+                );
+            } catch (MalformedURLException e){
+                throw new IllegalStateException("Invalid Selenium remote URL " + remoteUrl, e);
+            }
+
+    }
+
+    private static ChromeOptions createChromeOptions(){
         ChromeOptions options = new ChromeOptions();
 
-        if (ConfigReader.isHeadless()) {
-            options.addArguments("--headless=new");
-            options.addArguments("--window-size=1920,1080");
-            options.addArguments("--disable-gpu");
-            options.addArguments("--remote-debugging-port=0");
-        } else {
-            options.addArguments("--start-maximized");
-        }
-
+        options.addArguments("--window-size=1920,1080");
         options.addArguments("--no-sandbox");
         options.addArguments("--disable-dev-shm-usage");
-        options.addArguments("--disable-extensions");
-        options.addArguments("--disable-notifications");
 
-        Map<String, Object> prefs = new HashMap<>();
-        prefs.put("credentials_enable_service", false);
-        prefs.put("profile.password_manager_enabled", false);
+        if(ConfigReader.isHeadless()){
+            options.addArguments("--headless");
+        }
 
-        options.setExperimentalOption("prefs", prefs);
-
-        WebDriver driver = new ChromeDriver(options);
-        driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(ConfigReader.getPageLoadTimeout()));
-
-        return driver;
+        return options;
     }
 }
